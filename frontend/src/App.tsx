@@ -141,7 +141,7 @@ export default function App() {
         setLeftOffset({ x: 0, y: -3.5 });
         setRightOffset({ x: 0, y: -3.5 });
         setPortraitShiftX(0);
-      }, 1000);
+      }, 500);
     };
 
     const handleMouseLeave = () => {
@@ -287,6 +287,10 @@ export default function App() {
 
       <div className="right-block">
         <div className="location-label">CURRENTLY BASED IN <br/><a href="https://maps.google.com/?q=Nagpur" target="_blank" rel="noopener noreferrer" className='texttrans' style={{transition: 'color 0.3s ease'}}>NAG</a> | <a href="https://maps.google.com/?q=Ahmedabad" target="_blank" rel="noopener noreferrer" className='texttrans' style={{transition: 'color 0.3s ease'}}>AMD</a></div>
+      </div>
+
+      <div className="scroll-pill">
+        <span>scroll to unveil magic</span>
       </div>
     </div>
   );

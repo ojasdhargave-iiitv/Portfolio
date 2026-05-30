@@ -136,8 +136,8 @@ body {
 	position: absolute;
 	top: 42px;
 	left: 50%;
-	transform: translateX(-50%);
-	height: 30px;
+	transform: translateX(-53%);
+	height: 22px;
 	width: auto;
 	z-index: 5;
 }
@@ -444,5 +444,44 @@ body {
 	.portrait-wrap {
 		width: 70vw;
 		height: 65vh;
+	}
+}
+
+/* Scroll Pill Styles */
+.scroll-pill {
+	position: absolute;
+	bottom: 30px;
+	left: 49%;
+	transform: translate(-50%, 0);
+	background: rgba(0, 0, 0, 0.505);
+	backdrop-filter: blur(8px);
+	border: 1px solid rgba(255, 255, 255, 0);
+	border-radius: 9999px;
+	padding: 8px 15px;
+	z-index: 5;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	animation: scroll-float 5s infinite ease-in-out;
+	pointer-events: none;
+	opacity: .5;
+}
+
+.scroll-pill span {
+	font-family: "Cabin", sans-serif;
+	font-size: 8px;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: #ffffff;
+	opacity: 1;
+}
+
+@keyframes scroll-float {
+	0%, 100% {
+		transform: translate(-50%, 0);
+	}
+	50% {
+		transform: translate(-50%, -6px);
 	}
 }
