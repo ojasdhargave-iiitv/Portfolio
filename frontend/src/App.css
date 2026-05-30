@@ -71,6 +71,7 @@ body {
 	z-index: 5;
 	justify-content: center;
 	align-items: center;
+	transition: color 0.3s ease;
 }
 .name-block2 {
 	font-family: "Cabin", sans-serif;
@@ -117,7 +118,7 @@ body {
 
 .menu span {
 	font-family: "Cabin", sans-serif;
-	font-size: 25px;
+	font-size: 20px;
 	font-weight: 1000; /* Cabin Bold */
 	letter-spacing: 0.04em;
 	text-transform: uppercase;
@@ -225,7 +226,7 @@ body {
 .left-block {
 	position: absolute;
 	left: 30px;
-	bottom: 50px;
+	bottom: 30px;
 	display: flex;
 	flex-direction: column;
 	gap: 4px;
@@ -234,7 +235,7 @@ body {
 
 .title {
 	font-family: "Cabin", sans-serif;
-	font-size: 50px;
+	font-size: 40px;
 	font-weight: 1000; /* Cabin Bold */
 	text-transform: uppercase;
 	line-height: 1.08;
@@ -243,16 +244,16 @@ body {
 
 .year {
 	font-family: "Cabin", sans-serif;
-	font-size: 25px;
+	font-size: 20px;
 	font-weight: 1000; /* Cabin Bold */
-	margin-top: 10px;
+	margin-top: 0px;
 	text-transform: uppercase;
 }
 
 .right-block {
 	position: absolute;
 	right: 30px;
-	bottom: 90px;
+	bottom: 60px;
 	text-align: right;
 	font-family: "Cabin", sans-serif;
 	text-transform: uppercase;
@@ -260,9 +261,20 @@ body {
 }
 
 .location-label {
-	font-size: 50px;
+	font-size: 40px;
 	font-weight: 1000; /* Cabin Bold */
 	line-height: 1.08;
+}
+
+/* Hover style for text elements to match the menu green color (#D2FF00) */
+.texttrans {
+	text-decoration: none;
+	color: inherit;
+}
+
+.texttrans:hover {
+	color: #D2FF00;
+	cursor: pointer;
 }
 
 /* Tablet viewports (e.g. up to 1024px) */

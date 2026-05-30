@@ -126,7 +126,7 @@ export default function App() {
         playsInline
       />
       <div className="name-block">
-        <span>OJAS</span>
+        <span className='texttrans' style={{transition: 'color 0.3s ease'}}>OJAS</span>
         <span className="name-block2">DHAR</span>
         <span className="name-block2" style={{fontSize: '25.5px'}}>GAVE</span>
       </div>
@@ -224,13 +224,13 @@ export default function App() {
       </div>
 
       <div className="left-block">
-        <div className="title" style={{marginBottom:'30px'}}>FULL STACK DEVOPS <br/>ENGINEER </div>
-        <div className="title">CREATIVE DESIGNER <br/>& DEVELOPER</div>
+        <div className="title" style={{marginBottom:'30px'}}>FULL STACK <span className='texttrans' style={{transition: 'color 0.3s ease'}}>DEVOPS</span> <br/>ENGINEER </div>
+        <div className="title">CREATIVE <span className='texttrans' style={{transition: 'color 0.3s ease'}}>DESIGNER</span> <br/>& <span className='texttrans' style={{transition: 'color 0.3s ease'}}>DEVELOPER</span></div>
         <div className="year">©2026</div>
       </div>
 
       <div className="right-block">
-        <div className="location-label">CURRENTLY BASED IN <br/>NGP | AMD</div>
+        <div className="location-label">CURRENTLY BASED IN <br/><a href="https://maps.google.com/?q=Nagpur" target="_blank" rel="noopener noreferrer" className='texttrans' style={{transition: 'color 0.3s ease'}}>NAG</a> | <a href="https://maps.google.com/?q=Ahmedabad" target="_blank" rel="noopener noreferrer" className='texttrans' style={{transition: 'color 0.3s ease'}}>AMD</a></div>
       </div>
     </div>
   );
