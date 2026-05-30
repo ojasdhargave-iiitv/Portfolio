@@ -5,6 +5,7 @@ import minepic from './assets/images/minepic.png';
 import hollowmine from './assets/images/hollowmine.png';
 import eyeball from './assets/images/eyeball.png';
 import eyebg from './assets/images/eyebg.png';
+import hdbg from './assets/videos/hdbg.mp4';
 
 const menuItems = [
   'WORKS',
@@ -22,6 +23,7 @@ export default function App() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [leftOffset, setLeftOffset] = useState({ x: 0, y: -3.5 });
   const [rightOffset, setRightOffset] = useState({ x: 0, y: -3.5 });
+  const [portraitShiftX, setPortraitShiftX] = useState(0);
 
   useEffect(() => {
     let timeoutId: number;
@@ -77,11 +79,19 @@ export default function App() {
         setRightOffset({ x: 0, y: -3.5 });
       }
 
+      // Calculate portrait shift based on mouse X coordinate relative to container center
+      const portraitCenterX = rect.left + rect.width / 2;
+      const dxContainer = e.clientX - portraitCenterX;
+      // Shift up to +/- 3px
+      const shiftX = Math.max(-3, Math.min(3, -(dxContainer * 0.015)));
+      setPortraitShiftX(shiftX);
+
       // Reset to center after 1.5s of inactivity
       timeoutId = window.setTimeout(() => {
         setLeftOffset({ x: 0, y: -3.5 });
         setRightOffset({ x: 0, y: -3.5 });
-      }, 1500);
+        setPortraitShiftX(0);
+      }, 1000);
     };
 
     const handleMouseLeave = () => {
@@ -90,6 +100,7 @@ export default function App() {
       }
       setLeftOffset({ x: 0, y: -3.5 });
       setRightOffset({ x: 0, y: -3.5 });
+      setPortraitShiftX(0);
     };
 
     window.addEventListener('mousemove', handleMouseMove);
@@ -106,10 +117,18 @@ export default function App() {
 
   return (
     <div className="home">
+      <video
+        className="bg-video"
+        src={hdbg}
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
       <div className="name-block">
         <span>OJAS</span>
         <span className="name-block2">DHAR</span>
-        <span className="name-block2" style={{fontSize: '25propx'}}>GAVE</span>
+        <span className="name-block2" style={{fontSize: '25.5px'}}>GAVE</span>
       </div>
 
       <img className="brand-logo" src={logo} alt="OD logo" />
@@ -158,7 +177,7 @@ export default function App() {
           alt="Ojas Dhar Gave portrait"
         />
         */}
-        <div className="portrait-container" ref={containerRef}>
+        <div className="portrait-container" ref={containerRef} style={{ transform: `translateX(${portraitShiftX}px)` }}>
           {/* Bottom Layer: Eye backgrounds */}
           <img
             className="eye-bg"
