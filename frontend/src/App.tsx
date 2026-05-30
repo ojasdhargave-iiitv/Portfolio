@@ -6,6 +6,7 @@ import hollowmine from './assets/images/hollowmine.png';
 import eyeball from './assets/images/eyeball.png';
 import eyebg from './assets/images/eyebg.png';
 import hdbg from './assets/videos/hdbg.mp4';
+import LiquidDistortion from './components/LiquidDistortion';
 
 const menuItems = [
   'WORKS',
@@ -27,6 +28,7 @@ export default function App() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [shouldRenderLoader, setShouldRenderLoader] = useState(true);
+  const [isWebGLActive, setIsWebGLActive] = useState(false);
 
   // Asset preloading
   useEffect(() => {
@@ -173,13 +175,17 @@ export default function App() {
           <div className="preloader-text">LOAD OJAS</div>
         </div>
       )}
-      <video
-        className="bg-video"
+      <LiquidDistortion
         src={hdbg}
-        autoPlay
-        loop
-        muted
-        playsInline
+        strength={0.15}
+        radius={120}
+        relaxation={0.95}
+        blur={0.1}
+        opacity={0.10}
+        leftOffset={leftOffset}
+        rightOffset={rightOffset}
+        portraitRef={containerRef}
+        onWebGLActive={setIsWebGLActive}
       />
       <div className="name-block">
         <span className='texttrans' style={{transition: 'color 0.3s ease'}}>OJAS</span>
@@ -233,7 +239,15 @@ export default function App() {
           alt="Ojas Dhar Gave portrait"
         />
         */}
-        <div className="portrait-container" ref={containerRef} style={{ transform: `translateX(${portraitShiftX}px)` }}>
+        <div 
+          className="portrait-container" 
+          ref={containerRef} 
+          style={{ 
+            transform: `translateX(${portraitShiftX}px)`,
+            opacity: isWebGLActive ? 0 : 1,
+            pointerEvents: isWebGLActive ? 'none' : 'auto'
+          }}
+        >
           {/* Bottom Layer: Eye backgrounds */}
           <img
             className="eye-bg"
