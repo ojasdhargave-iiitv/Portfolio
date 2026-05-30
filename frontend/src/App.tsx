@@ -25,6 +25,56 @@ export default function App() {
   const [rightOffset, setRightOffset] = useState({ x: 0, y: -3.5 });
   const [portraitShiftX, setPortraitShiftX] = useState(0);
 
+  const [isLoading, setIsLoading] = useState(true);
+  const [shouldRenderLoader, setShouldRenderLoader] = useState(true);
+
+  // Asset preloading
+  useEffect(() => {
+    const assets = [logo, hollowmine, eyeball, eyebg, hdbg];
+    let loadedCount = 0;
+    const totalAssets = assets.length;
+
+    const onAssetLoaded = () => {
+      loadedCount++;
+      if (loadedCount === totalAssets) {
+        setIsLoading(false);
+      }
+    };
+
+    // Safety timeout of 6 seconds
+    const safetyTimeout = setTimeout(() => {
+      setIsLoading(false);
+    }, 6000);
+
+    assets.forEach((src) => {
+      if (src.endsWith('.mp4')) {
+        const video = document.createElement('video');
+        video.src = src;
+        video.muted = true;
+        video.oncanplaythrough = onAssetLoaded;
+        video.onerror = onAssetLoaded;
+        video.load();
+      } else {
+        const img = new Image();
+        img.src = src;
+        img.onload = onAssetLoaded;
+        img.onerror = onAssetLoaded;
+      }
+    });
+
+    return () => clearTimeout(safetyTimeout);
+  }, []);
+
+  // Handle unmounting after fade-out transition completes (500ms)
+  useEffect(() => {
+    if (!isLoading) {
+      const timer = setTimeout(() => {
+        setShouldRenderLoader(false);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [isLoading]);
+
   useEffect(() => {
     let timeoutId: number;
 
@@ -117,6 +167,12 @@ export default function App() {
 
   return (
     <div className="home">
+      {shouldRenderLoader && (
+        <div className={`preloader ${!isLoading ? 'fade-out' : ''}`}>
+          <img className="preloader-logo" src={logo} alt="OD Logo" />
+          <div className="preloader-text">LOAD OJAS</div>
+        </div>
+      )}
       <video
         className="bg-video"
         src={hdbg}
