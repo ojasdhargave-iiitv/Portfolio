@@ -1,0 +1,11 @@
+:root {
+  --bg: #f7f4ef;
+  --bg-2: #efe8df;
+  --text: #141414;
+  --muted: #5f5f5f;
+  --accent: #0f5d57;
+  --accent-2: #c84b31;
+  --border: #d9d1c6;
+  --shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+  --max-width: 1120px;
+}
