@@ -171,6 +171,42 @@ body {
 	object-fit: contain;
 }
 
+.portrait-container {
+	position: relative;
+	height: 100%;
+	display: inline-block;
+}
+
+.portrait-front {
+	height: 100%;
+	width: auto;
+	object-fit: contain;
+	display: block;
+	position: relative;
+	z-index: 3;
+	pointer-events: none;
+}
+
+.eye-bg {
+	position: absolute;
+	width: 8.8%;
+	aspect-ratio: 180 / 116;
+	z-index: 1;
+	transform: translate(-50%, -50%);
+	pointer-events: none;
+}
+
+.eyeball {
+	position: absolute;
+	width: 2.59%;
+	aspect-ratio: 53 / 51;
+	z-index: 2;
+	transform: translate(-50%, -50%);
+	pointer-events: none;
+	transition: transform 0.08s cubic-bezier(0.25, 1, 0.5, 1);
+	will-change: transform;
+}
+
 .left-block {
 	position: absolute;
 	left: 30px;

@@ -1,7 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './App.css';
 import logo from './assets/images/logo.png';
 import minepic from './assets/images/minepic.png';
+import hollowmine from './assets/images/hollowmine.png';
+import eyeball from './assets/images/eyeball.png';
+import eyebg from './assets/images/eyebg.png';
 
 const menuItems = [
   'WORKS',
@@ -16,12 +19,97 @@ export default function App() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [isMenuHovered, setIsMenuHovered] = useState(false);
 
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [leftOffset, setLeftOffset] = useState({ x: 0, y: -3.5 });
+  const [rightOffset, setRightOffset] = useState({ x: 0, y: -3.5 });
+
+  useEffect(() => {
+    let timeoutId: number;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (timeoutId) {
+        window.clearTimeout(timeoutId);
+      }
+
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      const width = rect.width;
+      const height = rect.height;
+
+      // Center of left and right eye in pixels relative to viewport
+      const leftCenterX = rect.left + width * 0.44726;
+      const leftCenterY = rect.top + height * 0.46538;
+
+      const rightCenterX = rect.left + width * 0.59443;
+      const rightCenterY = rect.top + height * 0.47538;
+
+      // Mouse vector and distance
+      const dxLeft = e.clientX - leftCenterX;
+      const dyLeft = e.clientY - leftCenterY;
+      const distLeft = Math.sqrt(dxLeft * dxLeft + dyLeft * dyLeft);
+
+      const dxRight = e.clientX - rightCenterX;
+      const dyRight = e.clientY - rightCenterY;
+      const distRight = Math.sqrt(dxRight * dxRight + dyRight * dyRight);
+
+      // Clamping travel distance relative to scaled wrapper width
+      const maxRadius = width * 0.012;
+
+      if (distLeft > 0) {
+        const limitLeft = Math.min(distLeft * 0.05, maxRadius);
+        const angleLeft = Math.atan2(dyLeft, dxLeft);
+        setLeftOffset({
+          x: Math.cos(angleLeft) * limitLeft,
+          y: Math.sin(angleLeft) * limitLeft
+        });
+      } else {
+        setLeftOffset({ x: 0, y: -3.5 });
+      }
+
+      if (distRight > 0) {
+        const limitRight = Math.min(distRight * 0.05, maxRadius);
+        const angleRight = Math.atan2(dyRight, dxRight);
+        setRightOffset({
+          x: Math.cos(angleRight) * limitRight,
+          y: Math.sin(angleRight) * limitRight
+        });
+      } else {
+        setRightOffset({ x: 0, y: -3.5 });
+      }
+
+      // Reset to center after 1.5s of inactivity
+      timeoutId = window.setTimeout(() => {
+        setLeftOffset({ x: 0, y: -3.5 });
+        setRightOffset({ x: 0, y: -3.5 });
+      }, 1500);
+    };
+
+    const handleMouseLeave = () => {
+      if (timeoutId) {
+        window.clearTimeout(timeoutId);
+      }
+      setLeftOffset({ x: 0, y: -3.5 });
+      setRightOffset({ x: 0, y: -3.5 });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseleave', handleMouseLeave);
+    
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseleave', handleMouseLeave);
+      if (timeoutId) {
+        window.clearTimeout(timeoutId);
+      }
+    };
+  }, []);
+
   return (
     <div className="home">
       <div className="name-block">
         <span>OJAS</span>
         <span className="name-block2">DHAR</span>
-        <span className="name-block2" style={{fontSize: '25px'}}>GAVE</span>
+        <span className="name-block2" style={{fontSize: '25propx'}}>GAVE</span>
       </div>
 
       <img className="brand-logo" src={logo} alt="OD logo" />
@@ -63,11 +151,57 @@ export default function App() {
       </nav>
 
       <div className="portrait-wrap">
+        {/*
         <img
           className="portrait"
           src={minepic}
           alt="Ojas Dhar Gave portrait"
         />
+        */}
+        <div className="portrait-container" ref={containerRef}>
+          {/* Bottom Layer: Eye backgrounds */}
+          <img
+            className="eye-bg"
+            src={eyebg}
+            alt="Left eye background"
+            style={{ left: '44.73%', top: '46.54%' }}
+          />
+          <img
+            className="eye-bg"
+            src={eyebg}
+            alt="Right eye background"
+            style={{ left: '59.44%', top: '47.54%' }}
+          />
+
+          {/* Middle Layer: Eyeballs */}
+          <img
+            className="eyeball"
+            src={eyeball}
+            alt="Left eyeball"
+            style={{
+              left: '44.73%',
+              top: '46.54%',
+              transform: `translate(-50%, -50%) translate(${leftOffset.x}px, ${leftOffset.y}px)`
+            }}
+          />
+          <img
+            className="eyeball"
+            src={eyeball}
+            alt="Right eyeball"
+            style={{
+              left: '59.44%',
+              top: '47.54%',
+              transform: `translate(-50%, -50%) translate(${rightOffset.x}px, ${rightOffset.y}px)`
+            }}
+          />
+
+          {/* Top Layer: Hollow portrait */}
+          <img
+            className="portrait-front"
+            src={hollowmine}
+            alt="Ojas Dhar Gave portrait"
+          />
+        </div>
       </div>
 
       <div className="left-block">
