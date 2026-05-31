@@ -16,7 +16,7 @@ const menuItems = [
   'EDUCATION',
   'RESUME',
   'CONTACT',
-  'ABOUT'
+  // 'ABOUT'
 ];
 
 const techStackCategories = [
@@ -655,9 +655,9 @@ export default function App() {
               className={`slider-thumb ${(hoveredIndex !== null || activeSectionIndex !== -1) ? 'visible' : ''}`}
               style={{
                 top: hoveredIndex !== null
-                  ? `calc(${hoveredIndex} * 20%)`
+                  ? `${hoveredIndex * (100 / (menuItems.length - 1))}%`
                   : activeSectionIndex !== -1
-                    ? `calc(${activeSectionIndex} * 20%)`
+                    ? `${activeSectionIndex * (100 / (menuItems.length - 1))}%`
                     : '0%'
               }}
             />
