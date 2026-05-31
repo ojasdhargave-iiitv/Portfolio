@@ -110,6 +110,10 @@ interface LiquidDistortionProps {
   portraitRef?: React.RefObject<HTMLDivElement | null>;
   onWebGLActive?: (active: boolean) => void;
   easedProgress?: number;
+  hollowmineUrl?: string;
+  eyeballUrl?: string;
+  eyebgUrl?: string;
+  minepicUrl?: string;
 }
 
 export default function LiquidDistortion({
@@ -123,7 +127,11 @@ export default function LiquidDistortion({
   rightOffset,
   portraitRef,
   onWebGLActive,
-  easedProgress = 0
+  easedProgress = 0,
+  hollowmineUrl,
+  eyeballUrl,
+  eyebgUrl,
+  minepicUrl
 }: LiquidDistortionProps) {
   const leftOffsetRef = useRef(leftOffset);
   const rightOffsetRef = useRef(rightOffset);
@@ -357,10 +365,10 @@ export default function LiquidDistortion({
       checkLoaded();
     };
 
-    imgHollow.src = hollowmine;
-    imgEyebg.src = eyebg;
-    imgEyeball.src = eyeball;
-    imgMine.src = minepic;
+    imgHollow.src = hollowmineUrl || hollowmine;
+    imgEyebg.src = eyebgUrl || eyebg;
+    imgEyeball.src = eyeballUrl || eyeball;
+    imgMine.src = minepicUrl || minepic;
 
     if (imgHollow.complete) hollowLoaded = true;
     if (imgEyebg.complete) eyebgLoaded = true;
@@ -626,7 +634,7 @@ export default function LiquidDistortion({
 
       renderer.dispose();
     };
-  }, [isMobile, src, strength, radius, relaxation, blur, opacity]);
+  }, [isMobile, src, strength, radius, relaxation, blur, opacity, hollowmineUrl, eyeballUrl, eyebgUrl, minepicUrl]);
 
   return (
     <div ref={containerRef} className="distortion-container">

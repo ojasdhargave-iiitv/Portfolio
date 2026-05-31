@@ -52,6 +52,23 @@
 	text-transform: uppercase;
 }
 
+.preloader-bar-container {
+	position: absolute;
+	bottom: 90px;
+	width: 250px;
+	height: 3px;
+	background: rgba(0, 0, 0, 0.15);
+	border-radius: 9999px;
+	overflow: hidden;
+}
+
+.preloader-bar {
+	height: 100%;
+	background: #000000;
+	width: 0%;
+	transition: width 0.1s ease-out;
+}
+
 @keyframes preloader-pulse {
 	0%, 100% {
 		transform: scale(1);

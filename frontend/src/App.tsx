@@ -6,6 +6,8 @@ import hollowmine from './assets/images/hollowmine.png';
 import eyeball from './assets/images/eyeball.png';
 import eyebg from './assets/images/eyebg.png';
 import hdbg from './assets/videos/hdbg.mp4';
+// @ts-ignore
+import movesCabseFont from './assets/fonts/MovesCabse-Regular.ttf';
 import LiquidDistortion from './components/LiquidDistortion';
 
 const menuItems = [
@@ -54,41 +56,141 @@ export default function App() {
   const targetScrollRef = useRef(0);
   const currentScrollRef = useRef(0);
 
-  // Asset preloading
-  useEffect(() => {
-    const assets = [logo, hollowmine, eyeball, eyebg, hdbg];
-    let loadedCount = 0;
-    const totalAssets = assets.length;
+  const [progress, setProgress] = useState(0);
 
-    const onAssetLoaded = () => {
-      loadedCount++;
-      if (loadedCount === totalAssets) {
+  // Preloaded URLs initialized to the static imports as fallbacks
+  const [logoUrl, setLogoUrl] = useState(logo);
+  const [minepicUrl, setMinepicUrl] = useState(minepic);
+  const [hollowmineUrl, setHollowmineUrl] = useState(hollowmine);
+  const [eyeballUrl, setEyeballUrl] = useState(eyeball);
+  const [eyebgUrl, setEyebgUrl] = useState(eyebg);
+  const [hdbgUrl, setHdbgUrl] = useState(hdbg);
+
+  // Asset preloading with progress tracking
+  useEffect(() => {
+    const assetsToLoad = [
+      { key: 'logo', src: logo, size: 2273 },
+      { key: 'minepic', src: minepic, size: 2426407 },
+      { key: 'hollowmine', src: hollowmine, size: 2447583 },
+      { key: 'eyeball', src: eyeball, size: 5184 },
+      { key: 'eyebg', src: eyebg, size: 19807 },
+      { key: 'hdbg', src: hdbg, size: 3092733 },
+      { key: 'movesCabseFont', src: movesCabseFont, size: 109040 }
+    ];
+
+    const loadedBytes: Record<string, number> = {};
+    const totalBytes = assetsToLoad.reduce((acc, a) => acc + a.size, 0);
+    const objectUrls: string[] = [];
+
+    const updateProgress = () => {
+      const currentLoaded = Object.values(loadedBytes).reduce((acc, bytes) => acc + bytes, 0);
+      const percent = Math.min(99, Math.round((currentLoaded / totalBytes) * 99)); // Keep at 99% until fonts.ready is done
+      setProgress(percent);
+    };
+
+    const fetchAsset = async (asset: typeof assetsToLoad[0]) => {
+      try {
+        const response = await fetch(asset.src);
+        if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+        
+        const reader = response.body?.getReader();
+        if (!reader) {
+          // Fallback if ReadableStream reader is not available
+          const blob = await response.blob();
+          loadedBytes[asset.key] = asset.size;
+          updateProgress();
+          return blob;
+        }
+
+        const chunks: Uint8Array[] = [];
+        let loaded = 0;
+        
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          if (value) {
+            chunks.push(value);
+            loaded += value.length;
+            loadedBytes[asset.key] = loaded;
+            updateProgress();
+          }
+        }
+        return new Blob(chunks);
+      } catch (error) {
+        console.warn(`Failed to dynamically fetch asset ${asset.key}:`, error);
+        // Mark as fully loaded to prevent blockages
+        loadedBytes[asset.key] = asset.size;
+        updateProgress();
+        // Return fallback
+        const fallbackResponse = await fetch(asset.src);
+        return await fallbackResponse.blob();
+      }
+    };
+
+    let active = true;
+
+    const startPreloading = async () => {
+      try {
+        const promises = assetsToLoad.map(async (asset) => {
+          const blob = await fetchAsset(asset);
+          if (!active) return;
+
+          const objectUrl = URL.createObjectURL(blob);
+          objectUrls.push(objectUrl);
+
+          if (asset.key === 'logo') setLogoUrl(objectUrl);
+          else if (asset.key === 'minepic') setMinepicUrl(objectUrl);
+          else if (asset.key === 'hollowmine') setHollowmineUrl(objectUrl);
+          else if (asset.key === 'eyeball') setEyeballUrl(objectUrl);
+          else if (asset.key === 'eyebg') setEyebgUrl(objectUrl);
+          else if (asset.key === 'hdbg') setHdbgUrl(objectUrl);
+          else if (asset.key === 'movesCabseFont') {
+            try {
+              const fontFace = new FontFace('Moves Cabse', `url(${objectUrl})`);
+              const loadedFont = await fontFace.load();
+              document.fonts.add(loadedFont);
+            } catch (err) {
+              console.error('Failed to load FontFace:', err);
+            }
+          }
+        });
+
+        await Promise.all(promises);
+
+        if (!active) return;
+
+        // Ensure all fonts are ready (including CSS imported Cabin)
+        try {
+          await document.fonts.ready;
+        } catch (e) {
+          console.warn('document.fonts.ready failed or timed out:', e);
+        }
+
+        setProgress(100);
+        setIsLoading(false);
+      } catch (err) {
+        console.error('Preloading error:', err);
+        setProgress(100);
         setIsLoading(false);
       }
     };
 
-    // Safety timeout of 6 seconds
+    // Safety timeout of 15 seconds
     const safetyTimeout = setTimeout(() => {
-      setIsLoading(false);
-    }, 6000);
-
-    assets.forEach((src) => {
-      if (src.endsWith('.mp4')) {
-        const video = document.createElement('video');
-        video.src = src;
-        video.muted = true;
-        video.oncanplaythrough = onAssetLoaded;
-        video.onerror = onAssetLoaded;
-        video.load();
-      } else {
-        const img = new Image();
-        img.src = src;
-        img.onload = onAssetLoaded;
-        img.onerror = onAssetLoaded;
+      if (active) {
+        console.warn('Safety loading timeout fired.');
+        setProgress(100);
+        setIsLoading(false);
       }
-    });
+    }, 15000);
 
-    return () => clearTimeout(safetyTimeout);
+    startPreloading();
+
+    return () => {
+      active = false;
+      clearTimeout(safetyTimeout);
+      objectUrls.forEach(url => URL.revokeObjectURL(url));
+    };
   }, []);
 
   // Handle unmounting after fade-out transition completes (500ms)
@@ -295,13 +397,16 @@ export default function App() {
     >
       {shouldRenderLoader && (
         <div className={`preloader ${!isLoading ? 'fade-out' : ''}`}>
-          <img className="preloader-logo" src={logo} alt="OD Logo" />
-          <div className="preloader-text">LOAD OJAS</div>
+          <img className="preloader-logo" src={logoUrl} alt="OD Logo" />
+          <div className="preloader-bar-container">
+            <div className="preloader-bar" style={{ width: `${progress}%` }} />
+          </div>
+          <div className="preloader-text">LOAD OJAS {progress}%</div>
         </div>
       )}
 
       <video
-        src={hdbg}
+        src={hdbgUrl}
         autoPlay
         loop
         muted
@@ -361,7 +466,7 @@ export default function App() {
           }}
         />
         <LiquidDistortion
-          src={hdbg}
+          src={hdbgUrl}
           strength={0.15}
           radius={120}
           relaxation={0.95}
@@ -372,6 +477,10 @@ export default function App() {
           portraitRef={containerRef}
           onWebGLActive={setIsWebGLActive}
           easedProgress={easedProgress}
+          hollowmineUrl={hollowmineUrl}
+          eyeballUrl={eyeballUrl}
+          eyebgUrl={eyebgUrl}
+          minepicUrl={minepicUrl}
         />
         <div 
           className="portrait-wrap"
@@ -392,13 +501,13 @@ export default function App() {
             {/* Bottom Layer: Eye backgrounds */}
             <img
               className="eye-bg"
-              src={eyebg}
+              src={eyebgUrl}
               alt="Left eye background"
               style={{ left: '44.73%', top: '46.54%', opacity: 1 - easedProgress }}
             />
             <img
               className="eye-bg"
-              src={eyebg}
+              src={eyebgUrl}
               alt="Right eye background"
               style={{ left: '59.44%', top: '47.54%', opacity: 1 - easedProgress }}
             />
@@ -406,7 +515,7 @@ export default function App() {
             {/* Middle Layer: Eyeballs */}
             <img
               className="eyeball"
-              src={eyeball}
+              src={eyeballUrl}
               alt="Left eyeball"
               style={{
                 left: '44.73%',
@@ -417,7 +526,7 @@ export default function App() {
             />
             <img
               className="eyeball"
-              src={eyeball}
+              src={eyeballUrl}
               alt="Right eyeball"
               style={{
                 left: '59.44%',
@@ -430,7 +539,7 @@ export default function App() {
             {/* Top Layer: Hollow portrait */}
             <img
               className="portrait-front"
-              src={hollowmine}
+              src={hollowmineUrl}
               alt="Ojas Dhar Gave portrait"
               style={{ opacity: 1 - easedProgress }}
             />
@@ -438,7 +547,7 @@ export default function App() {
             {/* Solid portrait */}
             <img
               className="portrait-solid"
-              src={minepic}
+              src={minepicUrl}
               alt="Ojas Dhar Gave portrait solid"
               style={{
                 height: '100%',
@@ -465,7 +574,7 @@ export default function App() {
 
       <img 
         className="brand-logo" 
-        src={logo} 
+        src={logoUrl} 
         alt="OD logo" 
         style={{
           filter: easedProgress > 0.5 ? 'brightness(0) invert(1)' : 'none'
