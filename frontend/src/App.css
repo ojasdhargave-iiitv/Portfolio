@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&family=Caveat:wght@700&display=swap');
 
 @font-face {
 	font-family: "Moves Cabse";
@@ -619,7 +619,7 @@ body {
 /* Scrollable vertical content sections */
 .scrollable-content {
 	width: 100%;
-	height: 660vh;
+	height: 860vh;
 	display: flex;
 	flex-direction: column;
 	will-change: transform;
@@ -1302,7 +1302,7 @@ body {
 	display: flex;
 	align-items: flex-start;
 	justify-content: center;
-	background-color: #141710;
+	background-color: #282C20;
 	position: relative;
 	z-index: 2;
 	box-sizing: border-box;
@@ -1468,7 +1468,7 @@ body {
 	font-weight: 700;
 	line-height: 1.0;
 	color: #D2FF00;
-	-webkit-text-stroke: 1px #282C20;
+	-webkit-text-stroke: .5px #282C20;
 	margin: 0;
 	text-transform: uppercase;
 	user-select: none;
@@ -1501,6 +1501,477 @@ body {
 	color: #282C20;
 	border-color: #282C20;
 	transform: scale(1.05);
+}
+
+/* Contact Section (Section 7) Styling */
+.contact-section {
+	width: 100%;
+	height: 198vh;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: flex-start;
+	background: transparent;
+	position: relative;
+	z-index: 1;
+	box-sizing: border-box;
+	padding: 0;
+}
+
+.contact-cards-viewport {
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	padding: 0;
+}
+
+.contact-footer-viewport {
+	width: 99%;
+	height: 50%;
+	margin-left: 0.5%;
+	margin-top: 4%;
+	position: relative;
+	background-size: cover;
+	background-position: center top;
+	background-repeat: no-repeat;
+	/* background-color: #141710; */
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	box-sizing: border-box;
+	padding: 8vh 80px;
+	overflow: hidden;
+}
+
+.footer-overlay-content {
+	width: 100%;
+	max-width: 1300px;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	height: calc(100% - 60px);
+	position: relative;
+}
+
+.footer-header {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	margin-top: 2vh;
+}
+
+.footer-signature {
+	width: 220px;
+	height: auto;
+	margin-bottom: -10px;
+}
+
+.footer-motto {
+	font-family: "Moves Cabse", sans-serif;
+	font-size: min(6.5vw, 85px);
+	font-weight: 700;
+	line-height: 0.95;
+	color: #ffffff;
+	text-transform: uppercase;
+	margin: 0;
+	letter-spacing: -0.01em;
+	margin-top: 30px;
+}
+
+.footer-motto .bring {
+	font-family: "Cabin", sans-serif;
+	color: #D2FF00;
+	text-transform: none;
+	font-size: 1em;
+	display: inline-block;
+}
+
+.footer-grid {
+	width: 70%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: flex-start;
+	margin-top: 5vh;
+}
+
+.footer-col {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
+.footer-col:first-child {
+	align-items: flex-start;
+	text-align: left;
+}
+
+.footer-col:last-child {
+	align-items: flex-end;
+	text-align: right;
+}
+
+.footer-col-label {
+	font-family: "Cabin", sans-serif;
+	font-size: 12px;
+	font-weight: 700;
+	color: rgba(255, 255, 255, 0.4);
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+
+.footer-links {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.footer-links li,
+.footer-links li a {
+	font-family: "Moves Cabse", sans-serif;
+	font-size: 20px;
+	font-weight: 700;
+	color: #ffffff;
+	text-decoration: none;
+	cursor: pointer;
+	transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.footer-links li:hover,
+.footer-links li a:hover {
+	color: #D2FF00;
+	transform: translateX(4px);
+}
+
+.footer-col:last-child .footer-links li:hover {
+	transform: translateX(-4px);
+}
+
+.sponsor-bar {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: auto;
+	padding-top: 4vh;
+	padding-bottom: 3vh;
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+	box-sizing: border-box;
+}
+
+.sponsor-logo {
+	font-family: "Cabin", sans-serif;
+	font-weight: 700;
+	font-size: 16px;
+	color: rgba(255, 255, 255, 0.35);
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	user-select: none;
+}
+
+.sponsor-logo.font-moves {
+	font-family: "Moves Cabse", sans-serif;
+	font-weight: 700;
+}
+
+.sponsor-divider {
+	width: 1px;
+	height: 18px;
+	background-color: rgba(255, 255, 255, 0.15);
+}
+
+.business-enquiries-wrap {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	margin-bottom: 4vh;
+}
+
+.business-btn {
+	display: inline-block;
+	font-family: "Cabin", sans-serif;
+	font-size: 15px;
+	font-weight: 1000;
+	text-transform: uppercase;
+	color: #141710;
+	background-color: #D2FF00;
+	border: 2px solid #D2FF00;
+	border-radius: 9999px;
+	padding: 14px 32px;
+	text-decoration: none;
+	letter-spacing: 0.05em;
+	transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+	box-shadow: 0 4px 15px rgba(210, 255, 0, 0.2);
+}
+
+.business-btn:hover {
+	background-color: #fffef5;
+	border-color: #fffef5;
+	color: #141710;
+	transform: translateY(-2px);
+	box-shadow: 0 6px 20px rgba(255, 255, 245, 0.3);
+}
+
+.footer-bottom-bar {
+	position: absolute;
+	bottom: .0;
+	left: 0;
+	width: 100%;
+	height: 20px;
+	/* background-color: #D2FF00; */
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0px 3px;
+	box-sizing: border-box;
+	z-index: 10;
+	border-top-left-radius: 12px;
+	border-top-right-radius: 12px;
+}
+
+.footer-bottom-bar .copyright,
+.footer-bottom-bar .legal-links span {
+	font-family: "Cabin", sans-serif;
+	font-size: 10px;
+	font-weight: 700;
+	color: #141710;
+	text-transform: uppercase;
+	letter-spacing: 0.02em;
+}
+
+.footer-bottom-bar .legal-links {
+	display: flex;
+	gap: 30px;
+}
+
+.footer-bottom-bar .legal-links span {
+	cursor: pointer;
+	transition: opacity 0.2s ease;
+}
+
+.footer-bottom-bar .legal-links span:hover {
+	opacity: 0.7;
+}
+
+.contact-container {
+	width: 100%;
+	max-width: 1300px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+}
+
+.contact-header-container {
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	will-change: transform, opacity;
+	transition: transform 0.1s ease-out, opacity 0.1s ease-out;
+}
+
+.contact-header-title {
+	font-family: "Cabin", sans-serif;
+	font-size: 3.8vw;
+	font-weight: 1000;
+	line-height: 1;
+	color: #282C20;
+	margin: 0;
+	text-transform: uppercase;
+	user-select: none;
+}
+
+.contact-header-subtitle {
+	font-family: "Moves Cabse", sans-serif;
+	font-size: 4vw;
+	font-weight: 1000;
+	line-height: 1;
+	color: #282C20;
+	-webkit-text-stroke: 1px #282C20;
+	margin: 0;
+	text-transform: uppercase;
+	user-select: none;
+}
+
+.social-cards-wrap {
+	position: relative;
+	width: 100%;
+	height: 350px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.social-card {
+	position: absolute;
+	left: 50%;
+	width: 230px;
+	height: 330px;
+	margin-left: -120px;
+	border-radius: 28px;
+	background: rgba(40, 44, 32, 0.95);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	padding: 28px 24px;
+	cursor: pointer;
+	text-decoration: none;
+	will-change: transform, opacity;
+	transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease, border-color 0.4s ease, background 0.4s ease;
+	transform-origin: bottom center;
+}
+
+.social-card:hover {
+	border-color: var(--platform-color) !important;
+	box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 35px var(--platform-glow) !important;
+}
+
+.social-card.card-insta {
+	--card-x: -240px;
+	--card-rot: -12deg;
+	--card-y: 30px;
+	--hover-x: -240px;
+	--platform-color: #E1306C;
+	--platform-glow: rgba(225, 48, 108, 0.35);
+}
+.social-card.card-linkedin {
+	--card-x: -120px;
+	--card-rot: -6deg;
+	--card-y: 10px;
+	--hover-x: -120px;
+	--platform-color: #0077B5;
+	--platform-glow: rgba(0, 119, 181, 0.35);
+}
+.social-card.card-gmail {
+	--card-x: 0px;
+	--card-rot: 0deg;
+	--card-y: 0px;
+	--hover-x: 0px;
+	--platform-color: #EA4335;
+	--platform-glow: rgba(234, 67, 53, 0.35);
+}
+.social-card.card-github {
+	--card-x: 120px;
+	--card-rot: 6deg;
+	--card-y: 10px;
+	--hover-x: 120px;
+	--platform-color: #ffffff;
+	--platform-glow: rgba(255, 255, 255, 0.25);
+}
+.social-card.card-behance {
+	--card-x: 240px;
+	--card-rot: 12deg;
+	--card-y: 30px;
+	--hover-x: 240px;
+	--platform-color: #0057ff;
+	--platform-glow: rgba(0, 87, 255, 0.35);
+}
+
+.social-card-top {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+}
+
+.social-platform-name {
+	font-family: "Cabin", sans-serif;
+	font-size: 13px;
+	font-weight: 1000;
+	color: rgba(255, 255, 255, 0.5);
+	letter-spacing: 0.08em;
+	transition: color 0.3s ease;
+}
+
+.social-card:hover .social-platform-name {
+	color: var(--platform-color);
+}
+
+.social-card-arrow {
+	color: rgba(255, 255, 255, 0.3);
+	transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.social-card:hover .social-card-arrow {
+	color: #fffef5;
+	transform: translate(2px, -2px);
+}
+
+.social-card-mid {
+	position: relative;
+	height: 120px;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.social-icon-wrapper {
+	z-index: 2;
+	transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.social-card:hover .social-icon-wrapper {
+	transform: scale(1.2);
+}
+
+.social-glow-orb {
+	position: absolute;
+	width: 80px;
+	height: 80px;
+	border-radius: 50%;
+	filter: blur(25px);
+	opacity: 0.2;
+	z-index: 1;
+	transition: opacity 0.4s ease, filter 0.4s ease;
+}
+
+.social-card:hover .social-glow-orb {
+	opacity: 0.55;
+	filter: blur(20px);
+}
+
+.social-card-bottom {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	width: 100%;
+}
+
+.social-handle {
+	font-family: "Cabin", sans-serif;
+	font-size: 16px;
+	font-weight: 1000;
+	color: #fffef5;
+	letter-spacing: -0.01em;
+}
+
+.social-action {
+	font-family: "Cabin", sans-serif;
+	font-size: 10px;
+	font-weight: 700;
+	color: rgba(255, 255, 255, 0.45);
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+}
+
+.social-card:hover .social-action {
+	color: #fffef5;
 }
 
 /* Tablet overrides for Education */
@@ -1544,6 +2015,93 @@ body {
 	.resume-btn {
 		font-size: 20px;
 		padding: 18px 40px;
+	}
+	
+	/* Contact Tablet overrides */
+	.contact-section {
+		height: 200vh;
+		padding: 0;
+	}
+	.contact-footer-viewport {
+		padding: 6vh 40px 0 40px;
+	}
+	.footer-motto {
+		font-size: min(8vw, 65px);
+	}
+	.footer-links li,
+	.footer-links li a {
+		font-size: 16px;
+	}
+	.footer-bottom-bar {
+		padding: 0 40px;
+	}
+	.sponsor-bar {
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 20px;
+	}
+	.sponsor-divider {
+		display: none;
+	}
+	.contact-container {
+		gap: 15px;
+	}
+	.contact-header-title {
+		font-size: min(8vw, 70px);
+	}
+	.contact-header-subtitle {
+		font-size: min(8vw, 70px);
+	}
+	.social-cards-wrap {
+		height: 380px;
+		margin-top: 20px;
+	}
+	.social-card {
+		width: 190px;
+		height: 300px;
+		margin-left: -95px;
+		padding: 20px 18px;
+		border-radius: 20px;
+	}
+	.social-card.card-insta {
+		--card-x: -180px;
+		--hover-x: -180px;
+		--card-rot: -10deg;
+		--card-y: 20px;
+	}
+	.social-card.card-linkedin {
+		--card-x: -90px;
+		--hover-x: -90px;
+		--card-rot: -5deg;
+		--card-y: 8px;
+	}
+	.social-card.card-gmail {
+		--card-x: 0px;
+		--hover-x: 0px;
+		--card-rot: 0deg;
+		--card-y: 0px;
+	}
+	.social-card.card-github {
+		--card-x: 90px;
+		--hover-x: 90px;
+		--card-rot: 5deg;
+		--card-y: 8px;
+	}
+	.social-card.card-behance {
+		--card-x: 180px;
+		--hover-x: 180px;
+		--card-rot: 10deg;
+		--card-y: 20px;
+	}
+	.social-card-mid {
+		height: 90px;
+	}
+	.social-icon-wrapper svg {
+		width: 32px;
+		height: 32px;
+	}
+	.social-handle {
+		font-size: 13px;
 	}
 }
 
@@ -1593,5 +2151,149 @@ body {
 		font-size: 18px;
 		padding: 14px 30px;
 		border-width: 2px;
+	}
+	
+	/* Contact Mobile overrides */
+	.contact-section {
+		height: 200vh;
+		padding: 0;
+	}
+	.contact-footer-viewport {
+		padding: 4vh 20px 0 20px;
+	}
+	.footer-motto {
+		font-size: min(10vw, 40px);
+	}
+	.footer-signature {
+		width: 150px;
+	}
+	.footer-grid {
+		flex-direction: column;
+		align-items: center;
+		gap: 20px;
+		margin-top: 3vh;
+	}
+	.footer-col:first-child,
+	.footer-col:last-child {
+		align-items: center;
+		text-align: center;
+	}
+	.footer-col:last-child .footer-links li:hover {
+		transform: translateX(4px);
+	}
+	.sponsor-bar {
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 12px;
+		padding-top: 2vh;
+		padding-bottom: 2vh;
+		border-top: 1px solid rgba(255, 255, 255, 0.08);
+	}
+	.sponsor-logo {
+		font-size: 11px;
+	}
+	.sponsor-divider {
+		display: none;
+	}
+	.business-enquiries-wrap {
+		margin-top: 2vh;
+		margin-bottom: 2vh;
+	}
+	.business-btn {
+		font-size: 12px;
+		padding: 10px 20px;
+	}
+	.footer-bottom-bar {
+		padding: 0 20px;
+		height: auto;
+		min-height: 50px;
+		flex-direction: column;
+		justify-content: center;
+		gap: 8px;
+		padding-top: 10px;
+		padding-bottom: 10px;
+	}
+	.footer-bottom-bar .legal-links {
+		gap: 20px;
+	}
+	.contact-header-container {
+		margin-bottom: 10px;
+	}
+	.contact-header-title {
+		font-size: min(10vw, 50px);
+	}
+	.contact-header-subtitle {
+		font-size: min(10vw, 50px);
+		-webkit-text-stroke: .5px #282C20;
+	}
+	.social-cards-wrap {
+		position: relative;
+		height: auto;
+		flex-direction: column;
+		gap: 14px;
+		width: 100%;
+		align-items: center;
+		margin-top: 20px;
+	}
+	.social-card {
+		position: relative;
+		left: auto;
+		margin-left: 0;
+		width: 100%;
+		max-width: 340px;
+		height: 85px;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		padding: 15px 20px;
+		border-radius: 18px;
+		transform: none !important;
+		opacity: 1 !important;
+		box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+	}
+	.social-card-top {
+		width: auto;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 2px;
+		order: 2;
+	}
+	.social-platform-name {
+		font-size: 10px;
+	}
+	.social-card-arrow {
+		display: none;
+	}
+	.social-card-mid {
+		height: 40px;
+		width: 40px;
+		margin: 0;
+		order: 1;
+	}
+	.social-icon-wrapper svg {
+		width: 28px;
+		height: 28px;
+	}
+	.social-glow-orb {
+		width: 35px;
+		height: 35px;
+		filter: blur(10px);
+	}
+	.social-card-bottom {
+		align-items: flex-end;
+		text-align: right;
+		gap: 2px;
+		order: 3;
+		width: auto;
+	}
+	.social-handle {
+		font-size: 14px;
+	}
+	.social-action {
+		font-size: 8px;
+	}
+	.social-card:hover {
+		transform: translateY(-4px) scale(1.02) !important;
+		box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25), 0 0 15px var(--platform-glow) !important;
 	}
 }

@@ -6,6 +6,7 @@ import hollowmine from './assets/images/hollowmine.png';
 import eyeball from './assets/images/eyeball.png';
 import eyebg from './assets/images/eyebg.png';
 import hdbg from './assets/videos/hdbg.mp4';
+import intersect from './assets/images/Intersect.png';
 // @ts-ignore
 import movesCabseFont from './assets/fonts/MovesCabse-Regular.ttf';
 import LiquidDistortion from './components/LiquidDistortion';
@@ -105,6 +106,112 @@ const educationData = [
   }
 ];
 
+const socialPlatforms = [
+  {
+    name: "INSTAGRAM",
+    handle: "@ojasdhargave",
+    url: "https://instagram.com",
+    color: "#E1306C",
+    glow: "rgba(225, 48, 108, 0.35)",
+    className: "card-insta",
+    bgColor: "#E1306C",
+    textColor: "#ffffff",
+    iconColor: "#ffffff",
+    borderColor: "rgba(255, 255, 255, 0.1)",
+    xOffset: -240,
+    rotateDeg: -12,
+    yOffset: 30,
+    renderIcon: () => (
+      <svg className="social-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+      </svg>
+    )
+  },
+  {
+    name: "LINKEDIN",
+    handle: "Ojas Dhargave",
+    url: "https://linkedin.com",
+    color: "#0077B5",
+    glow: "rgba(0, 119, 181, 0.35)",
+    className: "card-linkedin",
+    bgColor: "#0077B5",
+    textColor: "#ffffff",
+    iconColor: "#ffffff",
+    borderColor: "rgba(255, 255, 255, 0.1)",
+    xOffset: -120,
+    rotateDeg: -6,
+    yOffset: 10,
+    renderIcon: () => (
+      <svg className="social-icon" width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+      </svg>
+    )
+  },
+  {
+    name: "GMAIL",
+    handle: "ojasdhargave@gmail.com",
+    url: "mailto:ojasdhargave@gmail.com",
+    color: "#EA4335",
+    glow: "rgba(234, 67, 53, 0.35)",
+    className: "card-gmail",
+    bgColor: "#EA4335",
+    textColor: "#ffffff",
+    iconColor: "#ffffff",
+    borderColor: "rgba(255, 255, 255, 0.1)",
+    xOffset: 0,
+    rotateDeg: 0,
+    yOffset: 0,
+    renderIcon: () => (
+      <svg className="social-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+        <polyline points="22,6 12,13 2,6"></polyline>
+      </svg>
+    )
+  },
+  {
+    name: "GITHUB",
+    handle: "ojasdhargave",
+    url: "https://github.com/ojasdhargave",
+    color: "#ffffff",
+    glow: "rgba(255, 255, 255, 0.25)",
+    className: "card-github",
+    bgColor: "#181717",
+    textColor: "#ffffff",
+    iconColor: "#ffffff",
+    borderColor: "rgba(255, 255, 255, 0.12)",
+    xOffset: 120,
+    rotateDeg: 6,
+    yOffset: 10,
+    renderIcon: () => (
+      <svg className="social-icon" width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+      </svg>
+    )
+  },
+  {
+    name: "BEHANCE",
+    handle: "ojasdhargave",
+    url: "https://behance.net",
+    color: "#0057ff",
+    glow: "rgba(0, 87, 255, 0.35)",
+    className: "card-behance",
+    bgColor: "#fffef5",
+    textColor: "#282C20",
+    iconColor: "#0057ff",
+    borderColor: "rgba(40, 44, 32, 0.15)",
+    xOffset: 240,
+    rotateDeg: 12,
+    yOffset: 30,
+    renderIcon: () => (
+      <svg className="social-icon" width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M9 13H5v2.5h4c.83 0 1.5-.67 1.5-1.5s-.67-1-1.5-1zm-.5-5H5v2.5h3.5c.83 0 1.5-.67 1.5-1.5s-.67-1.25-1.5-1.25zM22 2H2v20h20V2zm-9 13.5c0 2.48-2.02 4.5-4.5 4.5H4V8h4.5C10.98 8 13 10.02 13 12.5c0 1.09-.39 2.08-1.03 2.86.64.13 1.03.64 1.03 1.14zm7.5-3.5h-5c-.83 0-1.5.67-1.5 1.5v2c0 .83.67 1.5 1.5 1.5h5c.83 0 1.5-.67 1.5-1.5v-2c0-.83-.67-1.5-1.5-1.5zm-5 1.5h3v1h-3v-1zm5-4.5h-5v1.5h5V8.5z"/>
+      </svg>
+    )
+  }
+];
+
 const projects = [
   {
     title: "F1 TELEMETRY GRAPH",
@@ -191,6 +298,16 @@ const ease = cubicBezier(0.25, 1, 0.5, 1);
 export default function App() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [isMenuHovered, setIsMenuHovered] = useState(false);
+  const [hoveredCardIndex, setHoveredCardIndex] = useState<number | null>(null);
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const isTablet = windowWidth <= 1024;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [leftOffset, setLeftOffset] = useState({ x: 0, y: -3.5 });
@@ -205,6 +322,10 @@ export default function App() {
   const targetScrollRef = useRef(0);
   const currentScrollRef = useRef(0);
 
+  const scrollToSection = (targetVal: number) => {
+    targetScrollRef.current = targetVal;
+  };
+
   const [progress, setProgress] = useState(0);
 
   // Preloaded URLs initialized to the static imports as fallbacks
@@ -214,6 +335,7 @@ export default function App() {
   const [eyeballUrl, setEyeballUrl] = useState(eyeball);
   const [eyebgUrl, setEyebgUrl] = useState(eyebg);
   const [hdbgUrl, setHdbgUrl] = useState(hdbg);
+  const [intersectUrl, setIntersectUrl] = useState(intersect);
 
   // Asset preloading with progress tracking
   useEffect(() => {
@@ -224,7 +346,8 @@ export default function App() {
       { key: 'eyeball', src: eyeball, size: 5184 },
       { key: 'eyebg', src: eyebg, size: 19807 },
       { key: 'hdbg', src: hdbg, size: 3092733 },
-      { key: 'movesCabseFont', src: movesCabseFont, size: 109040 }
+      { key: 'movesCabseFont', src: movesCabseFont, size: 109040 },
+      { key: 'intersect', src: intersect, size: 4017612 }
     ];
 
     const loadedBytes: Record<string, number> = {};
@@ -293,6 +416,7 @@ export default function App() {
           else if (asset.key === 'eyeball') setEyeballUrl(objectUrl);
           else if (asset.key === 'eyebg') setEyebgUrl(objectUrl);
           else if (asset.key === 'hdbg') setHdbgUrl(objectUrl);
+          else if (asset.key === 'intersect') setIntersectUrl(objectUrl);
           else if (asset.key === 'movesCabseFont') {
             try {
               const fontFace = new FontFace('Moves Cabse', `url(${objectUrl})`);
@@ -448,7 +572,7 @@ export default function App() {
       // More scroll in hand: 0.00035 multiplier gives highly premium, low-sensitivity control
       const speedMultiplier = 0.00035;
       let newTarget = targetScrollRef.current + e.deltaY * speedMultiplier;
-      newTarget = Math.max(0, Math.min(5, newTarget));
+      newTarget = Math.max(0, Math.min(6.5, newTarget));
       targetScrollRef.current = newTarget;
     };
 
@@ -467,7 +591,7 @@ export default function App() {
         
         const speedMultiplier = 0.0008;
         let newTarget = targetScrollRef.current + deltaY * speedMultiplier;
-        newTarget = Math.max(0, Math.min(5, newTarget));
+        newTarget = Math.max(0, Math.min(6.5, newTarget));
         targetScrollRef.current = newTarget;
       }
     };
@@ -553,42 +677,54 @@ export default function App() {
   // Scroll from Section 5 to Section 6 (4.0 to 4.5 scrollProgress)
   const scroll5to6 = scrollProgress >= 4.0 ? Math.min(1.0, (scrollProgress - 4.0) * 2) : 0;
 
-  const textR = Math.round(255 - (255 - 40) * scroll2to3 + (255 - 40) * scroll4to5 - (255 - 40) * scroll5to6);
-  const textG = Math.round(254 - (254 - 44) * scroll2to3 + (254 - 44) * scroll4to5 - (254 - 44) * scroll5to6);
-  const textB = Math.round(245 - (245 - 32) * scroll2to3 + (245 - 32) * scroll4to5 - (245 - 32) * scroll5to6);
+  // Scroll from Section 6 to Section 7 (5.0 to 5.5 scrollProgress)
+  const scroll6to7 = scrollProgress >= 5.0 ? Math.min(1.0, (scrollProgress - 5.0) * 2) : 0;
+
+  // Scroll from Section 7 Part 1 to Part 2 (5.5 to 6.5 scrollProgress)
+  const progress7 = scrollProgress >= 5.5 ? Math.min(1.0, (scrollProgress - 5.5)) : 0;
+
+  const textR = Math.round(255 - (255 - 40) * scroll2to3 + (255 - 40) * scroll4to5 - (255 - 40) * scroll5to6 + (255 - 40) * progress7);
+  const textG = Math.round(254 - (254 - 44) * scroll2to3 + (254 - 44) * scroll4to5 - (254 - 44) * scroll5to6 + (254 - 44) * progress7);
+  const textB = Math.round(245 - (245 - 32) * scroll2to3 + (245 - 32) * scroll4to5 - (245 - 32) * scroll5to6 + (245 - 32) * progress7);
   const textColor = scroll2to3 > 0.05 ? `rgb(${textR}, ${textG}, ${textB})` : baseTextColor;
 
-  const logoFilter = scroll5to6 > 0.5
-    ? 'none'
-    : scroll4to5 > 0.5
-      ? 'brightness(0) invert(1)'
-      : scroll2to3 > 0.5 
-        ? 'none' 
-        : easedProgress > 0.5 
-          ? 'brightness(0) invert(1)' 
-          : 'none';
+  const logoFilter = progress7 > 0.5
+    ? 'brightness(0) invert(1)'
+    : scroll5to6 > 0.5
+      ? 'none'
+      : scroll4to5 > 0.5
+        ? 'brightness(0) invert(1)'
+        : scroll2to3 > 0.5 
+          ? 'none' 
+          : easedProgress > 0.5 
+            ? 'brightness(0) invert(1)' 
+            : 'none';
 
   // Vertical translation value (Hero offset is 0, Section 2 is -100, Section 3 is -200, Section 4 is -300, Section 5 is -360)
   // Section 4 scrolls internally by 60vh (from -300vh to -360vh)
   // Section 5 enters vertically, shifting translateYVal from -360vh to -460vh
   // Section 6 enters vertically, shifting translateYVal from -460vh to -560vh
+  // Section 7 enters vertically, shifting translateYVal from -560vh to -660vh
+  // Section 7 Part 2 enters vertically, shifting translateYVal from -660vh to -760vh
   const progress4 = scrollProgress >= 2.5 && scrollProgress < 3.0 ? (scrollProgress - 2.5) * 2 : scrollProgress >= 3.0 ? 1 : 0;
-  const translateYVal = -(progress2 * 100 + scroll2to3 * 100 + scroll3to4 * 100 + progress4 * 60 + scroll4to5 * 100 + scroll5to6 * 100);
+  const translateYVal = -(progress2 * 100 + scroll2to3 * 100 + scroll3to4 * 100 + progress4 * 60 + scroll4to5 * 100 + scroll5to6 * 100 + scroll6to7 * 100 + progress7 * 100);
 
   // Scrolling parallax background text calculations
   const bgTextOpacity = Math.min(progress1 * 1.5, 0.85); // fades in as we scroll (up to 0.85 opacity)
   const line1Transform = `translateX(${progress2 * 120}vw)`; // slides off right in Phase 2
   const line2Transform = `translateX(${-progress2 * 120}vw)`; // slides off left in Phase 2
 
-  const activeSectionIndex = scrollProgress >= 4.0
-    ? 3
-    : scrollProgress >= 3.0
-      ? 2
-      : scrollProgress >= 2.0
-        ? 1
-        : scrollProgress >= 1.0
-          ? 0
-          : -1;
+  const activeSectionIndex = scrollProgress >= 5.0
+    ? 4
+    : scrollProgress >= 4.0
+      ? 3
+      : scrollProgress >= 3.0
+        ? 2
+        : scrollProgress >= 2.0
+          ? 1
+          : scrollProgress >= 1.0
+            ? 0
+            : -1;
 
   // Section 6 (Resume) animation calculations
   const resumeStaggerStart = 0.35;
@@ -601,6 +737,16 @@ export default function App() {
   const resumeLeftTransform = `translateX(${(1 - resumeEased) * -500}px)`;
   const resumeRightTransform = `translateX(${(1 - resumeEased) * 500}px)`;
   const resumeOpacity = resumeEased;
+
+  // Section 7 (Contact) animation calculations
+  const contactStaggerStart = 0.35;
+  const contactStaggerEnd = 0.8;
+  let contactLocalProgress = 0;
+  if (scroll6to7 > contactStaggerStart) {
+    contactLocalProgress = Math.min(1.0, (scroll6to7 - contactStaggerStart) / (contactStaggerEnd - contactStaggerStart));
+  }
+  const contactEased = contactLocalProgress * (2 - contactLocalProgress);
+  const contactOpacity = contactEased;
 
   return (
     <div 
@@ -634,7 +780,7 @@ export default function App() {
       />
 
       {/* Fixed Sticky Header Elements (stationary like in reference image) */}
-      <div className="name-block">
+      <div className="name-block" onClick={() => scrollToSection(0)} style={{cursor: 'pointer'}}>
         <span className='texttrans' style={{transition: 'color 0.3s ease'}}>OJAS</span>
         <span className="name-block2">DHAR</span>
         <span className="name-block2" style={{fontSize: '25.5px'}}>GAVE</span>
@@ -644,8 +790,10 @@ export default function App() {
         className="brand-logo" 
         src={logoUrl} 
         alt="OD logo" 
+        onClick={() => scrollToSection(0)}
         style={{
-          filter: logoFilter
+          filter: logoFilter,
+          cursor: 'pointer'
         }}
       />
 
@@ -667,6 +815,13 @@ export default function App() {
                 <li 
                   key={item}
                   onMouseEnter={() => setHoveredIndex(index)}
+                  onClick={() => {
+                    if (index === 0) scrollToSection(1.6);
+                    else if (index === 1) scrollToSection(2.6);
+                    else if (index === 2) scrollToSection(3.6);
+                    else if (index === 3) scrollToSection(4.6);
+                    else if (index === 4) scrollToSection(5.3);
+                  }}
                 >
                   <span className={isActive ? 'active' : ''}>
                     {item}
@@ -1118,6 +1273,184 @@ export default function App() {
               >
                 VIEW RESUME
               </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Section 7: Contact (Vertical Scroll & Transparent background revealing video/off-white) */}
+        <div className="section contact-section">
+          {/* Part 1: Social Cards Viewport */}
+          <div className="contact-cards-viewport">
+            <div className="contact-container">
+              {/* Header: WHAT'S UP ON SOCIALS */}
+              <div 
+                className="contact-header-container"
+                style={{
+                  transform: `translateY(${(1 - contactEased) * -30}px)`,
+                  opacity: contactOpacity
+                }}
+              >
+                <h2 className="contact-header-title">WHAT'S UP</h2>
+                <h2 className="contact-header-subtitle">ON SOCIALS</h2>
+              </div>
+
+              {/* Fanning Cards Container */}
+              <div className="social-cards-wrap">
+                {socialPlatforms.map((platform, idx) => {
+                  const isMobile = windowWidth <= 768;
+                  // Determine layout multipliers based on viewport width
+                  const xMult = isTablet ? 0.75 : 1.0;
+                  const rotMult = isTablet ? 0.83 : 1.0;
+
+                  // Base coordinates in fan
+                  const baseCardX = platform.xOffset * xMult;
+                  const baseCardRot = platform.rotateDeg * rotMult;
+                  const baseCardY = platform.yOffset * (isTablet ? 0.75 : 1.0);
+
+                  // Add spreading layout offsets on hover
+                  let hoverScale = 1.0;
+                  let finalX = baseCardX;
+
+                  if (hoveredCardIndex !== null) {
+                    if (hoveredCardIndex === idx) {
+                      hoverScale = 1.08; // Enlarge focus card slightly in place
+                    } else {
+                      hoverScale = 0.95; // Slightly scale down surrounding cards
+                      // Shift left or right based on relative positions
+                      const shiftDir = idx < hoveredCardIndex ? -1 : 1;
+                      const shiftAmount = isTablet ? 30 : 45;
+                      finalX = baseCardX + shiftDir * shiftAmount;
+                    }
+                  }
+
+                  // Compute dynamic transform using the ease progression
+                  const transform = isMobile
+                    ? 'none'
+                    : `translateX(${finalX * contactEased}px) rotate(${baseCardRot * contactEased}deg) translateY(${(1 - contactEased) * 200 + baseCardY * contactEased}px) scale(${hoverScale})`;
+
+                  // Dynamic z-index layering
+                  // Default: Gmail (index 2) is top (5), LinkedIn/GitHub (1,3) is mid (4), Instagram/Behance (0,4) is bottom (3)
+                  // Hovered card goes to absolute top (10)
+                  const baseZ = idx === 2 ? 5 : (idx === 1 || idx === 3) ? 4 : 3;
+                  const finalZIndex = hoveredCardIndex === idx ? 10 : baseZ;
+
+                  return (
+                    <a 
+                      key={idx}
+                      href={platform.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`social-card ${platform.className}`}
+                      onMouseEnter={() => setHoveredCardIndex(idx)}
+                      onMouseLeave={() => setHoveredCardIndex(null)}
+                      style={{
+                        transform,
+                        zIndex: finalZIndex,
+                        backgroundColor: platform.bgColor,
+                        color: platform.textColor,
+                        borderColor: platform.borderColor,
+                        opacity: contactOpacity,
+                        '--platform-color': platform.color,
+                        '--platform-glow': platform.glow
+                      } as React.CSSProperties}
+                    >
+                      {/* Card Top: Platform Name + Arrow */}
+                      <div className="social-card-top">
+                        <span className="social-platform-name" style={{ color: platform.textColor === '#282C20' ? 'rgba(40,44,32,0.6)' : 'rgba(255,255,255,0.6)' }}>
+                          {platform.name}
+                        </span>
+                        <svg className="social-card-arrow" style={{ color: platform.textColor === '#282C20' ? 'rgba(40,44,32,0.4)' : 'rgba(255,255,255,0.4)' }} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <line x1="7" y1="17" x2="17" y2="7"></line>
+                          <polyline points="7,7 17,7 17,17"></polyline>
+                        </svg>
+                      </div>
+
+                      {/* Card Middle: Brand Visual & Glow Logo */}
+                      <div className="social-card-mid">
+                        <div className="social-icon-wrapper" style={{ color: platform.iconColor }}>
+                          {platform.renderIcon()}
+                        </div>
+                        <div className="social-glow-orb" style={{ background: platform.glow }} />
+                      </div>
+
+                      {/* Card Bottom: Handle & Subtitle */}
+                      <div className="social-card-bottom">
+                        <span className="social-handle" style={{ color: platform.textColor }}>
+                          {platform.handle}
+                        </span>
+                        <span className="social-action" style={{ color: platform.textColor === '#282C20' ? 'rgba(40,44,32,0.5)' : 'rgba(255,255,255,0.5)' }}>
+                          VISIT LINK
+                        </span>
+                      </div>
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* Part 2: Footer Overlay Viewport */}
+          <div 
+            className="contact-footer-viewport"
+            style={{
+              backgroundImage: `url(${intersectUrl})`
+            }}
+          >
+            <div className="footer-overlay-content">
+              {/* Signature and Motto */}
+              <div className="footer-header">
+ 
+                <h2 className="footer-motto">
+                  ALWAYS <span className="bring">BRINGING</span><br />
+                  THE FIGHT.
+                </h2>
+              </div>
+
+              {/* Navigation and Info Grid */}
+              <div className="footer-grid">
+                <div className="footer-col">
+                  <span className="footer-col-label">PAGES</span>
+                  <ul className="footer-links">
+                    <li onClick={() => scrollToSection(0)}>HOME</li>
+                    <li onClick={() => scrollToSection(1.6)}>WORKS</li>
+                    <li onClick={() => scrollToSection(2.6)}>TECH STACKS</li>
+                    <li onClick={() => scrollToSection(3.6)}>EDUCATION</li>
+                    <li onClick={() => scrollToSection(4.6)}>RESUME</li>
+                    <li onClick={() => scrollToSection(5.3)}>CONTACT</li>
+                  </ul>
+                </div>
+
+                <div className="footer-col">
+                  <span className="footer-col-label">FOLLOW ON</span>
+                  <ul className="footer-links">
+                    <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer">INSTAGRAM</a></li>
+                    <li><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LINKEDIN</a></li>
+                    <li><a href="mailto:ojasdhargave@gmail.com">GMAIL</a></li>
+                    <li><a href="https://github.com/ojasdhargave" target="_blank" rel="noopener noreferrer">GITHUB</a></li>
+                    <li><a href="https://behance.net" target="_blank" rel="noopener noreferrer">BEHANCE</a></li>
+                  </ul>
+                </div>
+              </div>
+
+
+              {/* Neon Business Enquiry Pill Button */}
+              <div className="business-enquiries-wrap">
+                <a 
+                  href="mailto:ojasdhargave@gmail.com?subject=Business%20Enquiry" 
+                  className="business-btn"
+                >
+                  BUSINESS ENQUIRIES ↗
+                </a>
+              </div>
+            </div>
+
+            {/* Bottom copyright / legal bar */}
+            <div className="footer-bottom-bar">
+              <span className="copyright">© 2026 Ojas Dhargave. <br></br>All rights reserved</span>
+              <div className="legal-links">
+                <span>PRIVACY POLICY</span>
+                <span>TERMS</span>
+              </div>
             </div>
           </div>
         </div>
