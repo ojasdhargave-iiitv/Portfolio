@@ -83,6 +83,28 @@ const techStackCategories = [
   }
 ];
 
+const educationData = [
+  {
+    degree: "Bachelor of Technology in Computer Science & Engineering",
+    institute: "Indian Institute of Information Technology, Vadodara",
+    extra: "(IIT WITH AN EXTRA I)",
+    // details: "SPI: 8.00 | CPI: 7.52 (Current)",
+    timeline: "Expected May 2028"
+  },
+  {
+    degree: "Class XII (Higher Secondary): PCM + Electronics",
+    institute: "Major Hemant Jakate Institute of Science & Commerce",
+    details: "",
+    timeline: "2023"
+  },
+  {
+    degree: "Class X (Secondary)",
+    institute: "Kendriya Vidyalaya C.R.P.F. Nagpur",
+    details: "",
+    timeline: "2021"
+  }
+];
+
 const projects = [
   {
     title: "F1 TELEMETRY GRAPH",
@@ -426,7 +448,7 @@ export default function App() {
       // More scroll in hand: 0.00035 multiplier gives highly premium, low-sensitivity control
       const speedMultiplier = 0.00035;
       let newTarget = targetScrollRef.current + e.deltaY * speedMultiplier;
-      newTarget = Math.max(0, Math.min(3, newTarget));
+      newTarget = Math.max(0, Math.min(4, newTarget));
       targetScrollRef.current = newTarget;
     };
 
@@ -445,7 +467,7 @@ export default function App() {
         
         const speedMultiplier = 0.0008;
         let newTarget = targetScrollRef.current + deltaY * speedMultiplier;
-        newTarget = Math.max(0, Math.min(3, newTarget));
+        newTarget = Math.max(0, Math.min(4, newTarget));
         targetScrollRef.current = newTarget;
       }
     };
@@ -525,28 +547,34 @@ export default function App() {
   const bgB = Math.round(32 + (245 - 32) * scroll2to3);
   const backgroundColor = `rgb(${bgR}, ${bgG}, ${bgB})`;
 
-  const textR = Math.round(255 - (255 - 40) * scroll2to3);
-  const textG = Math.round(254 - (254 - 44) * scroll2to3);
-  const textB = Math.round(245 - (245 - 32) * scroll2to3);
+  // Scroll from Section 4 to Section 5 (3.0 to 3.5 scrollProgress)
+  const scroll4to5 = scrollProgress >= 3.0 ? Math.min(1.0, (scrollProgress - 3.0) * 2) : 0;
+
+  const textR = Math.round(255 - (255 - 40) * scroll2to3 + (255 - 40) * scroll4to5);
+  const textG = Math.round(254 - (254 - 44) * scroll2to3 + (254 - 44) * scroll4to5);
+  const textB = Math.round(245 - (245 - 32) * scroll2to3 + (245 - 32) * scroll4to5);
   const textColor = scroll2to3 > 0.05 ? `rgb(${textR}, ${textG}, ${textB})` : baseTextColor;
 
-  const logoFilter = scroll2to3 > 0.5 
-    ? 'none' 
-    : easedProgress > 0.5 
-      ? 'brightness(0) invert(1)' 
-      : 'none';
+  const logoFilter = scroll4to5 > 0.5
+    ? 'brightness(0) invert(1)'
+    : scroll2to3 > 0.5 
+      ? 'none' 
+      : easedProgress > 0.5 
+        ? 'brightness(0) invert(1)' 
+        : 'none';
 
-  // Vertical translation value (Hero offset is 0, Section 2 is -100, Section 3 is -200, Section 4 is -300)
-  // Plus additional vertical scroll in Section 4 (up to -340vh) to reveal overflowing rows
-  const progress4 = scrollProgress >= 2.5 ? Math.min(1.0, (scrollProgress - 2.5) * 2) : 0;
-  const translateYVal = -(progress2 * 100 + scroll2to3 * 100 + scroll3to4 * 100 + progress4 * 40);
+  // Vertical translation value (Hero offset is 0, Section 2 is -100, Section 3 is -200, Section 4 is -300, Section 5 is -360)
+  // Section 4 scrolls internally by 60vh (from -300vh to -360vh)
+  // Section 5 enters vertically, shifting translateYVal from -360vh to -460vh
+  const progress4 = scrollProgress >= 2.5 && scrollProgress < 3.0 ? (scrollProgress - 2.5) * 2 : scrollProgress >= 3.0 ? 1 : 0;
+  const translateYVal = -(progress2 * 100 + scroll2to3 * 100 + scroll3to4 * 100 + progress4 * 60 + scroll4to5 * 100);
 
   // Scrolling parallax background text calculations
   const bgTextOpacity = Math.min(progress1 * 1.5, 0.85); // fades in as we scroll (up to 0.85 opacity)
   const line1Transform = `translateX(${progress2 * 120}vw)`; // slides off right in Phase 2
   const line2Transform = `translateX(${-progress2 * 120}vw)`; // slides off left in Phase 2
 
-  const activeSectionIndex = scrollProgress >= 2.0 ? 1 : scrollProgress >= 1.0 ? 0 : -1;
+  const activeSectionIndex = scrollProgress >= 3.0 ? 2 : scrollProgress >= 2.0 ? 1 : scrollProgress >= 1.0 ? 0 : -1;
 
   return (
     <div 
@@ -925,8 +953,8 @@ export default function App() {
 
             <div className="tech-stack-rows-container">
               {techStackCategories.map((category, catIdx) => {
-                const staggerStart = catIdx * 0.08;
-                const staggerEnd = Math.min(1.0, staggerStart + 0.6);
+                const staggerStart = 0.45 + catIdx * 0.08;
+                const staggerEnd = Math.min(1.0, staggerStart + 0.45);
                 
                 let localProgress = 0;
                 if (scroll3to4 > staggerStart) {
@@ -935,10 +963,10 @@ export default function App() {
                 
                 const easedLocal = localProgress * (2 - localProgress);
 
-                const headingTransform = `translateX(${(1 - easedLocal) * -100}px)`;
+                const headingTransform = `translateX(${(1 - easedLocal) * -500}px)`;
                 const headingOpacity = easedLocal;
 
-                const gridTransform = `translateX(${(1 - easedLocal) * 100}px)`;
+                const gridTransform = `translateX(${(1 - easedLocal) * 500}px)`;
                 const gridOpacity = easedLocal;
 
                 return (
@@ -973,6 +1001,61 @@ export default function App() {
                           <span className="tech-icon-name">{skill.name}</span>
                         </div>
                       ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Section 5: Education (Vertical Scroll & Solid Theme Black background overlay) */}
+        <div className="section education-section">
+          <div className="education-container">
+            {/* Heading EDUCATION in one line at the top of the section */}
+            <div 
+              className="education-header-title"
+              style={{
+                transform: `translateY(${(1 - Math.min(1.0, scroll4to5 * 1.5)) * -30}px)`,
+                opacity: Math.min(1.0, scroll4to5 * 1.5)
+              }}
+            >
+              EDUCATION
+            </div>
+
+            <div className="education-list">
+              {educationData.map((item, idx) => {
+                const staggerStart = 0.4 + idx * 0.1;
+                const staggerEnd = Math.min(1.0, staggerStart + 0.45);
+                
+                let localProgress = 0;
+                if (scroll4to5 > staggerStart) {
+                  localProgress = Math.min(1.0, (scroll4to5 - staggerStart) / (staggerEnd - staggerStart));
+                }
+                
+                const easedLocal = localProgress * (2 - localProgress);
+                const transform = `translateX(${(1 - easedLocal) * -500}px)`;
+                const opacity = easedLocal;
+
+                return (
+                  <div 
+                    className="education-card" 
+                    key={idx}
+                    style={{ transform, opacity }}
+                  >
+                    <div className="education-card-left">
+                      <span className="tech-category-bullet" />
+                      <div className="education-meta">
+                        <span className="education-timeline">{item.timeline}</span>
+                        {item.details && <span className="education-grade">{item.details}</span>}
+                      </div>
+                    </div>
+
+                    <div className="education-card-right">
+                      <h4 className="education-degree">{item.degree}</h4>
+                      <p className="education-institute">
+                        {item.institute} {item.extra && <span className="institute-extra">{item.extra}</span>}
+                      </p>
                     </div>
                   </div>
                 );
