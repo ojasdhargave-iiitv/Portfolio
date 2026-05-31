@@ -619,7 +619,7 @@ body {
 /* Scrollable vertical content sections */
 .scrollable-content {
 	width: 100%;
-	height: 300vh;
+	height: 440vh;
 	display: flex;
 	flex-direction: column;
 	will-change: transform;
@@ -1086,5 +1086,211 @@ body {
 	}
 	.works-section {
 		padding-bottom: 5vh;
+	}
+}
+
+/* Tech Stack Section (Section 4) Styling */
+.tech-stack-section {
+	width: 100%;
+	height: 160vh;
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	background: transparent;
+	box-sizing: border-box;
+	padding-top: 25vh;
+	padding-bottom: 5vh;
+	padding-left: 130px;
+	padding-right: 80px;
+}
+
+.tech-stack-container {
+	width: 100%;
+	max-width: 1300px;
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+}
+
+.tech-stack-rows-container {
+	display: flex;
+	flex-direction: column;
+	gap: 22px;
+	width: 100%;
+}
+
+.tech-stack-header-title {
+	font-family: "Moves Cabse", sans-serif;
+	font-size: min(5vw, 75px);
+	font-weight: 700;
+	line-height: 1.0;
+	color: #D2FF00;
+	-webkit-text-stroke: .2px #282C20;
+	margin: 0;
+	margin-bottom: 5vh;
+	text-transform: uppercase;
+	user-select: none;
+	will-change: transform, opacity;
+	transition: transform 0.1s ease-out, opacity 0.1s ease-out;
+	text-align: left;
+	width: 100%;
+}
+
+.tech-stack-row {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	gap: 30px;
+}
+
+.tech-category-header {
+	width: 220px;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	flex-shrink: 0;
+	will-change: transform, opacity;
+	transition: transform 0.1s ease-out, opacity 0.1s ease-out;
+}
+
+.tech-category-bullet {
+	width: 8px;
+	height: 8px;
+	background-color: #D2FF00;
+	border: .5px solid #282C20;
+	transform: rotate(45deg);
+	flex-shrink: 0;
+	display: inline-block;
+}
+
+.tech-category-title {
+	font-family: "Cabin", sans-serif;
+	font-size: 21px;
+	font-weight: 1000;
+	color: #282C20;
+	margin: 0;
+	text-transform: uppercase;
+	letter-spacing: -0.01em;
+}
+
+.tech-icons-box {
+	display: flex;
+	flex-direction: row;
+	background: #141710;
+	border: .5px solid rgba(40, 44, 32, 0.15);
+	border-radius: 16px;
+	overflow: hidden;
+	box-shadow: 0 8px 30px rgba(40, 44, 32, 0.03);
+	will-change: transform, opacity;
+	transition: transform 0.1s ease-out, opacity 0.1s ease-out;
+}
+
+.tech-icon-cell {
+	width: 95px;
+	padding: 14px 8px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	border-right: 1px solid rgba(255, 255, 255, 0.08);
+	box-sizing: border-box;
+	transition: background-color 0.2s ease;
+}
+
+.tech-icon-cell:last-child {
+	border-right: none;
+}
+
+.tech-icon-cell:hover {
+	background-color: rgba(255, 255, 255, 0.03);
+}
+
+.tech-icon-img {
+	transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+	display: block;
+}
+
+.tech-icon-cell:hover .tech-icon-img {
+	transform: scale(1.15);
+}
+
+.tech-icon-name {
+	font-family: "Cabin", sans-serif;
+	font-size: 11px;
+	font-weight: 700;
+	color: rgba(255, 255, 255, 0.85);
+	text-transform: uppercase;
+	letter-spacing: 0.02em;
+	text-align: center;
+}
+
+/* Tablet overrides for Tech Stack */
+@media (max-width: 1024px) {
+	.tech-stack-section {
+		padding-top: 110px;
+		padding-bottom: 4vh;
+		padding-left: 40px;
+		padding-right: 40px;
+		height: 140vh;
+		box-sizing: border-box;
+		align-items: flex-start;
+	}
+	.tech-stack-container {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 20px;
+	}
+	.tech-stack-header-title {
+		font-size: min(8vw, 60px);
+		margin-bottom: 10px;
+	}
+	.tech-stack-rows-container {
+		width: 100%;
+		gap: 16px;
+	}
+	.tech-stack-row {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 8px;
+	}
+	.tech-category-header {
+		width: 100%;
+	}
+	.tech-icons-box {
+		width: 100%;
+		overflow-x: auto;
+		scrollbar-width: none; /* Firefox */
+	}
+	.tech-icons-box::-webkit-scrollbar {
+		display: none; /* Safari & Chrome */
+	}
+}
+
+/* Mobile overrides for Tech Stack */
+@media (max-width: 768px) {
+	.tech-stack-section {
+		padding-top: 90px;
+		padding-bottom: 3vh;
+		padding-left: 24px;
+		padding-right: 24px;
+	}
+	.tech-stack-header-title {
+		font-size: min(10vw, 45px);
+	}
+	.tech-icons-box {
+		border-radius: 12px;
+	}
+	.tech-icon-cell {
+		width: 80px;
+		padding: 10px 6px;
+		gap: 6px;
+	}
+	.tech-icon-cell img {
+		width: 35px;
+		height: 35px;
+	}
+	.tech-icon-name {
+		font-size: 9px;
 	}
 }

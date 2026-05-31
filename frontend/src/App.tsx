@@ -19,6 +19,70 @@ const menuItems = [
   'ABOUT'
 ];
 
+const techStackCategories = [
+  {
+    title: "Languages",
+    icon: "💬",
+    skills: [
+      { name: "C/C++", key: "cpp" },
+      { name: "JavaScript", key: "js" },
+      { name: "TypeScript", key: "ts" },
+      { name: "Python", key: "python" },
+      { name: "HTML", key: "html" },
+      { name: "CSS", key: "css" },
+      { name: "SQL", key: "mysql" }
+    ]
+  },
+  {
+    title: "Frontend",
+    icon: "🌐",
+    skills: [
+      { name: "React.js", key: "react" },
+      { name: "Tailwind", key: "tailwind" },
+      { name: "Three.js", key: "threejs" },
+      { name: "Figma", key: "figma" },
+      { name: "Blender", key: "blender" }
+    ]
+  },
+  {
+    title: "Backend",
+    icon: "⚙️",
+    skills: [
+      { name: "Node.js", key: "nodejs" },
+      { name: "Express.js", key: "express" },
+      { name: "FastAPI", key: "fastapi" },
+      { name: "OpenCV", key: "opencv" }
+    ]
+  },
+  {
+    title: "Databases & Cloud",
+    icon: "🗄️",
+    skills: [
+      { name: "MongoDB", key: "mongodb" },
+      { name: "MySQL", key: "mysql" },
+      { name: "PostgreSQL", key: "postgresql" },
+      { name: "Redis", key: "redis" },
+      { name: "Supabase", key: "supabase" },
+      { name: "Prisma", key: "prisma" },
+      { name: "Vercel", key: "vercel" },
+      { name: "AWS", key: "aws" }
+    ]
+  },
+  {
+    title: "Tools & DevOps",
+    icon: "🔧",
+    skills: [
+      { name: "Git", key: "git" },
+      { name: "GitHub", key: "github" },
+      { name: "Docker", key: "docker" },
+      { name: "Github Actions", key: "githubactions" },
+      { name: "VS Code", key: "vscode" },
+      { name: "Postman", key: "postman" },
+      { name: "Linux", key: "linux" }
+    ]
+  }
+];
+
 const projects = [
   {
     title: "F1 TELEMETRY GRAPH",
@@ -362,7 +426,7 @@ export default function App() {
       // More scroll in hand: 0.00035 multiplier gives highly premium, low-sensitivity control
       const speedMultiplier = 0.00035;
       let newTarget = targetScrollRef.current + e.deltaY * speedMultiplier;
-      newTarget = Math.max(0, Math.min(2, newTarget));
+      newTarget = Math.max(0, Math.min(3, newTarget));
       targetScrollRef.current = newTarget;
     };
 
@@ -381,7 +445,7 @@ export default function App() {
         
         const speedMultiplier = 0.0008;
         let newTarget = targetScrollRef.current + deltaY * speedMultiplier;
-        newTarget = Math.max(0, Math.min(2, newTarget));
+        newTarget = Math.max(0, Math.min(3, newTarget));
         targetScrollRef.current = newTarget;
       }
     };
@@ -438,6 +502,9 @@ export default function App() {
   // Phase 3: Horizontal scroll of Section 3 (1.5 to 2.0 scrollProgress)
   const progress3 = scrollProgress >= 1.5 ? Math.min(1, (scrollProgress - 1.5) * 2) : 0;
 
+  // Scroll from Section 3 to Section 4 (2.0 to 2.5 scrollProgress)
+  const scroll3to4 = scrollProgress >= 2.0 ? Math.min(1, (scrollProgress - 2.0) * 2) : 0;
+
   const shrinkScale = 1 - progress1 * 0.55; // vertical scale from 1.0 down to 0.45
   const shrinkScaleX = 1 - progress1 * 0.65; // horizontal scale from 1.0 down to 0.35 (reduces card width additional to height)
   const shrinkBorderRadius = progress1 * 32; // border radius from 0px to 32px
@@ -445,7 +512,7 @@ export default function App() {
   // Opacities
   const textOpacity = Math.max(0, 1 - progress1 * 1.3); // completely hides towards the end
   const pillOpacity = Math.max(0, 0.5 - progress1 * 5); // fades very quickly
-
+  
   // Interpolated text color: from #282C20 (40, 44, 32) to #fffef5 (255, 254, 245)
   const r = Math.round(40 + (255 - 40) * progress1);
   const g = Math.round(44 + (254 - 44) * progress1);
@@ -469,13 +536,17 @@ export default function App() {
       ? 'brightness(0) invert(1)' 
       : 'none';
 
-  // Vertical translation value (Hero offset is 0, Section 2 is -100, Section 3 is -200)
-  const translateYVal = -(progress2 * 100 + scroll2to3 * 100);
+  // Vertical translation value (Hero offset is 0, Section 2 is -100, Section 3 is -200, Section 4 is -300)
+  // Plus additional vertical scroll in Section 4 (up to -340vh) to reveal overflowing rows
+  const progress4 = scrollProgress >= 2.5 ? Math.min(1.0, (scrollProgress - 2.5) * 2) : 0;
+  const translateYVal = -(progress2 * 100 + scroll2to3 * 100 + scroll3to4 * 100 + progress4 * 40);
 
   // Scrolling parallax background text calculations
   const bgTextOpacity = Math.min(progress1 * 1.5, 0.85); // fades in as we scroll (up to 0.85 opacity)
   const line1Transform = `translateX(${progress2 * 120}vw)`; // slides off right in Phase 2
   const line2Transform = `translateX(${-progress2 * 120}vw)`; // slides off left in Phase 2
+
+  const activeSectionIndex = scrollProgress >= 2.0 ? 1 : scrollProgress >= 1.0 ? 0 : -1;
 
   return (
     <div 
@@ -536,8 +607,8 @@ export default function App() {
         <div className="menu-inner">
           <ul>
             {menuItems.map((item, index) => {
-              const isWorksHighlighted = (item === 'WORKS' && scroll2to3 > 0.1 && hoveredIndex === null);
-              const isActive = (hoveredIndex === index) || isWorksHighlighted;
+              const isSectionHighlighted = (activeSectionIndex === index && hoveredIndex === null);
+              const isActive = (hoveredIndex === index) || isSectionHighlighted;
               return (
                 <li 
                   key={item}
@@ -551,14 +622,14 @@ export default function App() {
             })}
           </ul>
           
-          <div className={`slider-track ${isMenuHovered || scroll2to3 > 0.1 ? 'visible' : ''}`}>
+          <div className={`slider-track ${isMenuHovered || activeSectionIndex !== -1 ? 'visible' : ''}`}>
             <div 
-              className={`slider-thumb ${(hoveredIndex !== null || scroll2to3 > 0.1) ? 'visible' : ''}`}
+              className={`slider-thumb ${(hoveredIndex !== null || activeSectionIndex !== -1) ? 'visible' : ''}`}
               style={{
                 top: hoveredIndex !== null
                   ? `calc(${hoveredIndex} * 20%)`
-                  : scroll2to3 > 0.1
-                    ? '0%' // WORKS is at index 0
+                  : activeSectionIndex !== -1
+                    ? `calc(${activeSectionIndex} * 20%)`
                     : '0%'
               }}
             />
@@ -596,10 +667,10 @@ export default function App() {
               style={{ transform: line2Transform }}
             >
               <div className="marquee-content">
-                I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. •&nbsp;
+                I'M OJAS, DESIGNER BY VISION. ENGINEER BY EXECUTION. BUILDING EXPERIENCES PEOPLE LOVE AND SYSTEMS THEY TRUST. • I'M OJAS, DESIGNER BY VISION. ENGINEER BY EXECUTION. BUILDING EXPERIENCES PEOPLE LOVE AND SYSTEMS THEY TRUST. • I'M OJAS, DESIGNER BY VISION. ENGINEER BY EXECUTION. BUILDING EXPERIENCES PEOPLE LOVE AND SYSTEMS THEY TRUST. • I'M OJAS, DESIGNER BY VISION. ENGINEER BY EXECUTION. BUILDING EXPERIENCES PEOPLE LOVE AND SYSTEMS THEY TRUST. • I'M OJAS, DESIGNER BY VISION. ENGINEER BY EXECUTION. BUILDING EXPERIENCES PEOPLE LOVE AND SYSTEMS THEY TRUST. • I'M OJAS, DESIGNER BY VISION. ENGINEER BY EXECUTION. BUILDING EXPERIENCES PEOPLE LOVE AND SYSTEMS THEY TRUST. •&nbsp;
               </div>
               <div className="marquee-content">
-                I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. •&nbsp;
+                I'M OJAS, DESIGNER BY VISION. ENGINEER BY EXECUTION. BUILDING EXPERIENCES PEOPLE LOVE AND SYSTEMS THEY TRUST. • I'M OJAS, DESIGNER BY VISION. ENGINEER BY EXECUTION. BUILDING EXPERIENCES PEOPLE LOVE AND SYSTEMS THEY TRUST. • I'M OJAS, DESIGNER BY VISION. ENGINEER BY EXECUTION. BUILDING EXPERIENCES PEOPLE LOVE AND SYSTEMS THEY TRUST. • I'M OJAS, DESIGNER BY VISION. ENGINEER BY EXECUTION. BUILDING EXPERIENCES PEOPLE LOVE AND SYSTEMS THEY TRUST. • I'M OJAS, DESIGNER BY VISION. ENGINEER BY EXECUTION. BUILDING EXPERIENCES PEOPLE LOVE AND SYSTEMS THEY TRUST. • I'M OJAS, DESIGNER BY VISION. ENGINEER BY EXECUTION. BUILDING EXPERIENCES PEOPLE LOVE AND SYSTEMS THEY TRUST. •&nbsp;
               </div>
             </div>
           </div>
@@ -835,6 +906,78 @@ export default function App() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* Section 4: Tech Stack (Vertical Scroll & Off-White background) */}
+        <div className="section tech-stack-section">
+          <div className="tech-stack-container">
+            {/* Horizontal heading TECH STACKS in one line at the top of the section */}
+            <div 
+              className="tech-stack-header-title"
+              style={{
+                transform: `translateY(${(1 - Math.min(1.0, scroll3to4 * 1.5)) * -30}px)`,
+                opacity: Math.min(1.0, scroll3to4 * 1.5)
+              }}
+            >
+              TECH STACKS
+            </div>
+
+            <div className="tech-stack-rows-container">
+              {techStackCategories.map((category, catIdx) => {
+                const staggerStart = catIdx * 0.08;
+                const staggerEnd = Math.min(1.0, staggerStart + 0.6);
+                
+                let localProgress = 0;
+                if (scroll3to4 > staggerStart) {
+                  localProgress = Math.min(1.0, (scroll3to4 - staggerStart) / (staggerEnd - staggerStart));
+                }
+                
+                const easedLocal = localProgress * (2 - localProgress);
+
+                const headingTransform = `translateX(${(1 - easedLocal) * -100}px)`;
+                const headingOpacity = easedLocal;
+
+                const gridTransform = `translateX(${(1 - easedLocal) * 100}px)`;
+                const gridOpacity = easedLocal;
+
+                return (
+                  <div className="tech-stack-row" key={catIdx}>
+                    <div 
+                      className="tech-category-header"
+                      style={{
+                        transform: headingTransform,
+                        opacity: headingOpacity
+                      }}
+                    >
+                      <span className="tech-category-bullet" />
+                      <h3 className="tech-category-title">{category.title}</h3>
+                    </div>
+
+                    <div 
+                      className="tech-icons-box"
+                      style={{
+                        transform: gridTransform,
+                        opacity: gridOpacity
+                      }}
+                    >
+                      {category.skills.map((skill, skillIdx) => (
+                        <div className="tech-icon-cell" key={skillIdx}>
+                          <img 
+                            src={`https://skillicons.dev/icons?i=${skill.key}`} 
+                            width="45" 
+                            height="45" 
+                            alt={skill.name} 
+                            className="tech-icon-img"
+                          />
+                          <span className="tech-icon-name">{skill.name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
