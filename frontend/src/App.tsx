@@ -448,7 +448,7 @@ export default function App() {
       // More scroll in hand: 0.00035 multiplier gives highly premium, low-sensitivity control
       const speedMultiplier = 0.00035;
       let newTarget = targetScrollRef.current + e.deltaY * speedMultiplier;
-      newTarget = Math.max(0, Math.min(4, newTarget));
+      newTarget = Math.max(0, Math.min(5, newTarget));
       targetScrollRef.current = newTarget;
     };
 
@@ -467,7 +467,7 @@ export default function App() {
         
         const speedMultiplier = 0.0008;
         let newTarget = targetScrollRef.current + deltaY * speedMultiplier;
-        newTarget = Math.max(0, Math.min(4, newTarget));
+        newTarget = Math.max(0, Math.min(5, newTarget));
         targetScrollRef.current = newTarget;
       }
     };
@@ -550,31 +550,57 @@ export default function App() {
   // Scroll from Section 4 to Section 5 (3.0 to 3.5 scrollProgress)
   const scroll4to5 = scrollProgress >= 3.0 ? Math.min(1.0, (scrollProgress - 3.0) * 2) : 0;
 
-  const textR = Math.round(255 - (255 - 40) * scroll2to3 + (255 - 40) * scroll4to5);
-  const textG = Math.round(254 - (254 - 44) * scroll2to3 + (254 - 44) * scroll4to5);
-  const textB = Math.round(245 - (245 - 32) * scroll2to3 + (245 - 32) * scroll4to5);
+  // Scroll from Section 5 to Section 6 (4.0 to 4.5 scrollProgress)
+  const scroll5to6 = scrollProgress >= 4.0 ? Math.min(1.0, (scrollProgress - 4.0) * 2) : 0;
+
+  const textR = Math.round(255 - (255 - 40) * scroll2to3 + (255 - 40) * scroll4to5 - (255 - 40) * scroll5to6);
+  const textG = Math.round(254 - (254 - 44) * scroll2to3 + (254 - 44) * scroll4to5 - (254 - 44) * scroll5to6);
+  const textB = Math.round(245 - (245 - 32) * scroll2to3 + (245 - 32) * scroll4to5 - (245 - 32) * scroll5to6);
   const textColor = scroll2to3 > 0.05 ? `rgb(${textR}, ${textG}, ${textB})` : baseTextColor;
 
-  const logoFilter = scroll4to5 > 0.5
-    ? 'brightness(0) invert(1)'
-    : scroll2to3 > 0.5 
-      ? 'none' 
-      : easedProgress > 0.5 
-        ? 'brightness(0) invert(1)' 
-        : 'none';
+  const logoFilter = scroll5to6 > 0.5
+    ? 'none'
+    : scroll4to5 > 0.5
+      ? 'brightness(0) invert(1)'
+      : scroll2to3 > 0.5 
+        ? 'none' 
+        : easedProgress > 0.5 
+          ? 'brightness(0) invert(1)' 
+          : 'none';
 
   // Vertical translation value (Hero offset is 0, Section 2 is -100, Section 3 is -200, Section 4 is -300, Section 5 is -360)
   // Section 4 scrolls internally by 60vh (from -300vh to -360vh)
   // Section 5 enters vertically, shifting translateYVal from -360vh to -460vh
+  // Section 6 enters vertically, shifting translateYVal from -460vh to -560vh
   const progress4 = scrollProgress >= 2.5 && scrollProgress < 3.0 ? (scrollProgress - 2.5) * 2 : scrollProgress >= 3.0 ? 1 : 0;
-  const translateYVal = -(progress2 * 100 + scroll2to3 * 100 + scroll3to4 * 100 + progress4 * 60 + scroll4to5 * 100);
+  const translateYVal = -(progress2 * 100 + scroll2to3 * 100 + scroll3to4 * 100 + progress4 * 60 + scroll4to5 * 100 + scroll5to6 * 100);
 
   // Scrolling parallax background text calculations
   const bgTextOpacity = Math.min(progress1 * 1.5, 0.85); // fades in as we scroll (up to 0.85 opacity)
   const line1Transform = `translateX(${progress2 * 120}vw)`; // slides off right in Phase 2
   const line2Transform = `translateX(${-progress2 * 120}vw)`; // slides off left in Phase 2
 
-  const activeSectionIndex = scrollProgress >= 3.0 ? 2 : scrollProgress >= 2.0 ? 1 : scrollProgress >= 1.0 ? 0 : -1;
+  const activeSectionIndex = scrollProgress >= 4.0
+    ? 3
+    : scrollProgress >= 3.0
+      ? 2
+      : scrollProgress >= 2.0
+        ? 1
+        : scrollProgress >= 1.0
+          ? 0
+          : -1;
+
+  // Section 6 (Resume) animation calculations
+  const resumeStaggerStart = 0.35;
+  const resumeStaggerEnd = 0.8;
+  let resumeLocalProgress = 0;
+  if (scroll5to6 > resumeStaggerStart) {
+    resumeLocalProgress = Math.min(1.0, (scroll5to6 - resumeStaggerStart) / (resumeStaggerEnd - resumeStaggerStart));
+  }
+  const resumeEased = resumeLocalProgress * (2 - resumeLocalProgress);
+  const resumeLeftTransform = `translateX(${(1 - resumeEased) * -500}px)`;
+  const resumeRightTransform = `translateX(${(1 - resumeEased) * 500}px)`;
+  const resumeOpacity = resumeEased;
 
   return (
     <div 
@@ -1060,6 +1086,38 @@ export default function App() {
                   </div>
                 );
               })}
+            </div>
+          </div>
+        </div>
+
+        {/* Section 6: Resume (Vertical Scroll & Transparent background revealing video/off-white) */}
+        <div className="section resume-section">
+          <div className="resume-container">
+            <div 
+              className="resume-left"
+              style={{
+                transform: resumeLeftTransform,
+                opacity: resumeOpacity
+              }}
+            >
+              <h2 className="resume-header-title">RESUME</h2>
+            </div>
+            
+            <div 
+              className="resume-right"
+              style={{
+                transform: resumeRightTransform,
+                opacity: resumeOpacity
+              }}
+            >
+              <a 
+                href="https://drive.google.com/file/d/1dLvQrq_nfjMAMF-0Zdvhz27b9i40FF8V/view?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="resume-btn"
+              >
+                VIEW RESUME
+              </a>
             </div>
           </div>
         </div>
