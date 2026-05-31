@@ -19,6 +19,69 @@ const menuItems = [
   'ABOUT'
 ];
 
+const projects = [
+  {
+    title: "F1 TELEMETRY GRAPH",
+    tag: "REAL-TIME DATA STREAMING / NEON DASHBOARD",
+    description: "Real-time high-speed data visualizer for Formula 1 telemetric metrics using WebSockets.",
+    githubUrl: "https://github.com/ojasdhargave/f1-telemetry-dashboard",
+    renderVisual: () => (
+      <div className="project-visual f1-telemetry-visual">
+        <div className="f1-grid" />
+        <div className="f1-dial">
+          <div className="f1-dial-inner">330</div>
+        </div>
+      </div>
+    )
+  },
+  {
+    title: "CORE BALANCER",
+    tag: "DISTRIBUTED CLOUD ROUTER / SYSTEM INFRA",
+    description: "Distributed request router with active load-balancing algorithms and system status dashboards.",
+    githubUrl: "https://github.com/ojasdhargave/core-balancer",
+    renderVisual: () => (
+      <div className="project-visual cloud-balancer-visual">
+        <div className="balancer-node" style={{ left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }} />
+        <div className="balancer-subnode" style={{ left: '20%', top: '30%' }} />
+        <div className="balancer-subnode" style={{ left: '80%', top: '30%' }} />
+        <div className="balancer-subnode" style={{ left: '30%', top: '70%' }} />
+        <div className="balancer-subnode" style={{ left: '70%', top: '70%' }} />
+        <div className="balancer-line" style={{ width: '42%', transform: 'rotate(-33deg)', left: '20%', top: '30%', transformOrigin: 'left top' }} />
+        <div className="balancer-line" style={{ width: '42%', transform: 'rotate(33deg)', left: '50%', top: '50%', transformOrigin: 'left top' }} />
+        <div className="balancer-line" style={{ width: '36%', transform: 'rotate(53deg)', left: '20%', top: '30%', transformOrigin: 'left top' }} />
+        <div className="balancer-line" style={{ width: '36%', transform: 'rotate(-53deg)', left: '50%', top: '50%', transformOrigin: 'left top' }} />
+      </div>
+    )
+  },
+  {
+    title: "AURA DESIGN STUDIO",
+    tag: "CREATIVE DESIGN & LAYOUT / BRAND PORTAL",
+    description: "Interactive 3D web showcase incorporating physics engines, fluid shaders, and modern layouts.",
+    githubUrl: "https://github.com/ojasdhargave/aura-design-studio",
+    renderVisual: () => (
+      <div className="project-visual aura-studio-visual">
+        <div className="aura-sphere" />
+      </div>
+    )
+  },
+  {
+    title: "NEURAL DRIFT SIM",
+    tag: "SELF-DRIVING AI AGENT / PYTHON SYSTEM",
+    description: "Deep reinforcement learning driving simulator simulating path-finding AI agents in real-time.",
+    githubUrl: "https://github.com/ojasdhargave/neural-drift-simulator",
+    renderVisual: () => (
+      <div className="project-visual neural-drift-visual">
+        <div className="neural-core">
+          <div className="balancer-node" style={{ position: 'relative', margin: 0 }} />
+        </div>
+        <div className="neural-wave" style={{ animationDelay: '0s' }} />
+        <div className="neural-wave" style={{ animationDelay: '0.8s' }} />
+        <div className="neural-wave" style={{ animationDelay: '1.6s' }} />
+      </div>
+    )
+  }
+];
+
 // Helper to create cubic-bezier easing function
 function cubicBezier(x1: number, y1: number, x2: number, y2: number) {
   return function(t: number) {
@@ -299,7 +362,7 @@ export default function App() {
       // More scroll in hand: 0.00035 multiplier gives highly premium, low-sensitivity control
       const speedMultiplier = 0.00035;
       let newTarget = targetScrollRef.current + e.deltaY * speedMultiplier;
-      newTarget = Math.max(0, Math.min(1, newTarget));
+      newTarget = Math.max(0, Math.min(2, newTarget));
       targetScrollRef.current = newTarget;
     };
 
@@ -318,7 +381,7 @@ export default function App() {
         
         const speedMultiplier = 0.0008;
         let newTarget = targetScrollRef.current + deltaY * speedMultiplier;
-        newTarget = Math.max(0, Math.min(1, newTarget));
+        newTarget = Math.max(0, Math.min(2, newTarget));
         targetScrollRef.current = newTarget;
       }
     };
@@ -361,13 +424,19 @@ export default function App() {
     return () => cancelAnimationFrame(animationId);
   }, []);
 
-  const easedProgress = ease(scrollProgress);
+  const easedProgress = ease(Math.min(1, scrollProgress));
   
   // Phase 1: Card shrinks (easedProgress from 0.0 to 0.5)
   const progress1 = Math.min(1, easedProgress * 2);
   
   // Phase 2: Background text scrolls off-screen (easedProgress from 0.5 to 1.0)
   const progress2 = Math.max(0, (easedProgress - 0.5) * 2);
+
+  // Scroll from Section 2 to Section 3 (1.0 to 1.5 scrollProgress)
+  const scroll2to3 = scrollProgress >= 1.0 ? Math.min(1, (scrollProgress - 1.0) * 2) : 0;
+
+  // Phase 3: Horizontal scroll of Section 3 (1.5 to 2.0 scrollProgress)
+  const progress3 = scrollProgress >= 1.5 ? Math.min(1, (scrollProgress - 1.5) * 2) : 0;
 
   const shrinkScale = 1 - progress1 * 0.55; // vertical scale from 1.0 down to 0.45
   const shrinkScaleX = 1 - progress1 * 0.65; // horizontal scale from 1.0 down to 0.35 (reduces card width additional to height)
@@ -381,7 +450,27 @@ export default function App() {
   const r = Math.round(40 + (255 - 40) * progress1);
   const g = Math.round(44 + (254 - 44) * progress1);
   const b = Math.round(32 + (245 - 32) * progress1);
-  const textColor = `rgb(${r}, ${g}, ${b})`;
+  const baseTextColor = `rgb(${r}, ${g}, ${b})`;
+
+  // Scrolling background color & text color transitions based on scroll2to3 (Section 2 to 3 scroll)
+  const bgR = Math.round(40 + (255 - 40) * scroll2to3);
+  const bgG = Math.round(44 + (254 - 44) * scroll2to3);
+  const bgB = Math.round(32 + (245 - 32) * scroll2to3);
+  const backgroundColor = `rgb(${bgR}, ${bgG}, ${bgB})`;
+
+  const textR = Math.round(255 - (255 - 40) * scroll2to3);
+  const textG = Math.round(254 - (254 - 44) * scroll2to3);
+  const textB = Math.round(245 - (245 - 32) * scroll2to3);
+  const textColor = scroll2to3 > 0.05 ? `rgb(${textR}, ${textG}, ${textB})` : baseTextColor;
+
+  const logoFilter = scroll2to3 > 0.5 
+    ? 'none' 
+    : easedProgress > 0.5 
+      ? 'brightness(0) invert(1)' 
+      : 'none';
+
+  // Vertical translation value (Hero offset is 0, Section 2 is -100, Section 3 is -200)
+  const translateYVal = -(progress2 * 100 + scroll2to3 * 100);
 
   // Scrolling parallax background text calculations
   const bgTextOpacity = Math.min(progress1 * 1.5, 0.85); // fades in as we scroll (up to 0.85 opacity)
@@ -393,6 +482,7 @@ export default function App() {
       className="home"
       style={{
         '--text-color': textColor,
+        backgroundColor: backgroundColor,
       } as React.CSSProperties}
     >
       {shouldRenderLoader && (
@@ -412,160 +502,13 @@ export default function App() {
         muted
         playsInline
         className="bg-video"
+        style={{
+          mixBlendMode: scroll2to3 > 0.5 ? 'multiply' : 'hard-light',
+          opacity: 0.10 - scroll2to3 * 0.03
+        } as React.CSSProperties}
       />
 
-      {/* Background Scrolling Parallax Text */}
-      <div 
-        className="scroll-text-bg"
-        style={{ opacity: bgTextOpacity }}
-      >
-        <div 
-          className="bg-text-line-1 marquee-ltr"
-          style={{ transform: line1Transform }}
-        >
-          <div className="marquee-content">
-            SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP •&nbsp;
-          </div>
-          <div className="marquee-content">
-            SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP •&nbsp;
-          </div>
-        </div>
-        <div 
-          className="bg-text-line-2 marquee-rtl"
-          style={{ transform: line2Transform }}
-        >
-          <div className="marquee-content">
-            I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. •&nbsp;
-          </div>
-          <div className="marquee-content">
-            I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. •&nbsp;
-          </div>
-        </div>
-      </div>
-
-      <div 
-        className="shrink-wrapper"
-        style={{
-          transform: `scale(${shrinkScaleX}, ${shrinkScale})`,
-          borderRadius: `${shrinkBorderRadius}px`,
-          boxShadow: `rgba(0, 0, 0, ${easedProgress * 0.15}) 0px ${easedProgress * 20}px ${easedProgress * 50}px`,
-        }}
-      >
-        <div 
-          className="shrink-overlay"
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(60, 60, 60, 0.6)',
-            opacity: easedProgress,
-            zIndex: 4,
-            pointerEvents: 'none'
-          }}
-        />
-        <LiquidDistortion
-          src={hdbgUrl}
-          strength={0.15}
-          radius={120}
-          relaxation={0.95}
-          blur={0.1}
-          opacity={0.10}
-          leftOffset={leftOffset}
-          rightOffset={rightOffset}
-          portraitRef={containerRef}
-          onWebGLActive={setIsWebGLActive}
-          easedProgress={easedProgress}
-          hollowmineUrl={hollowmineUrl}
-          eyeballUrl={eyeballUrl}
-          eyebgUrl={eyebgUrl}
-          minepicUrl={minepicUrl}
-        />
-        <div 
-          className="portrait-wrap"
-          style={{
-            transform: `translateX(-54%) scaleX(${shrinkScale / shrinkScaleX})`,
-            transformOrigin: 'bottom center'
-          }}
-        >
-          <div 
-            className="portrait-container" 
-            ref={containerRef} 
-            style={{ 
-              transform: `translateX(${portraitShiftX}px)`,
-              opacity: isWebGLActive ? 0 : 1,
-              pointerEvents: isWebGLActive ? 'none' : 'auto'
-            }}
-          >
-            {/* Bottom Layer: Eye backgrounds */}
-            <img
-              className="eye-bg"
-              src={eyebgUrl}
-              alt="Left eye background"
-              style={{ left: '44.73%', top: '46.54%', opacity: 1 - easedProgress }}
-            />
-            <img
-              className="eye-bg"
-              src={eyebgUrl}
-              alt="Right eye background"
-              style={{ left: '59.44%', top: '47.54%', opacity: 1 - easedProgress }}
-            />
-
-            {/* Middle Layer: Eyeballs */}
-            <img
-              className="eyeball"
-              src={eyeballUrl}
-              alt="Left eyeball"
-              style={{
-                left: '44.73%',
-                top: '46.54%',
-                transform: `translate(-50%, -50%) translate(${leftOffset.x}px, ${leftOffset.y}px)`,
-                opacity: 1 - easedProgress
-              }}
-            />
-            <img
-              className="eyeball"
-              src={eyeballUrl}
-              alt="Right eyeball"
-              style={{
-                left: '59.44%',
-                top: '47.54%',
-                transform: `translate(-50%, -50%) translate(${rightOffset.x}px, ${rightOffset.y}px)`,
-                opacity: 1 - easedProgress
-              }}
-            />
-
-            {/* Top Layer: Hollow portrait */}
-            <img
-              className="portrait-front"
-              src={hollowmineUrl}
-              alt="Ojas Dhar Gave portrait"
-              style={{ opacity: 1 - easedProgress }}
-            />
-
-            {/* Solid portrait */}
-            <img
-              className="portrait-solid"
-              src={minepicUrl}
-              alt="Ojas Dhar Gave portrait solid"
-              style={{
-                height: '100%',
-                width: 'auto',
-                objectFit: 'contain',
-                display: 'block',
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                zIndex: 4,
-                pointerEvents: 'none',
-                opacity: easedProgress
-              }}
-            />
-          </div>
-        </div>
-      </div>
-
+      {/* Fixed Sticky Header Elements (stationary like in reference image) */}
       <div className="name-block">
         <span className='texttrans' style={{transition: 'color 0.3s ease'}}>OJAS</span>
         <span className="name-block2">DHAR</span>
@@ -577,7 +520,7 @@ export default function App() {
         src={logoUrl} 
         alt="OD logo" 
         style={{
-          filter: easedProgress > 0.5 ? 'brightness(0) invert(1)' : 'none'
+          filter: logoFilter
         }}
       />
 
@@ -592,43 +535,308 @@ export default function App() {
       >
         <div className="menu-inner">
           <ul>
-            {menuItems.map((item, index) => (
-              <li 
-                key={item}
-                onMouseEnter={() => setHoveredIndex(index)}
-              >
-                <span className={hoveredIndex === index ? 'active' : ''}>
-                  {item}
-                </span>
-              </li>
-            ))}
+            {menuItems.map((item, index) => {
+              const isWorksHighlighted = (item === 'WORKS' && scroll2to3 > 0.1 && hoveredIndex === null);
+              const isActive = (hoveredIndex === index) || isWorksHighlighted;
+              return (
+                <li 
+                  key={item}
+                  onMouseEnter={() => setHoveredIndex(index)}
+                >
+                  <span className={isActive ? 'active' : ''}>
+                    {item}
+                  </span>
+                </li>
+              );
+            })}
           </ul>
           
-          <div className={`slider-track ${isMenuHovered ? 'visible' : ''}`}>
+          <div className={`slider-track ${isMenuHovered || scroll2to3 > 0.1 ? 'visible' : ''}`}>
             <div 
-              className={`slider-thumb ${hoveredIndex !== null ? 'visible' : ''}`}
+              className={`slider-thumb ${(hoveredIndex !== null || scroll2to3 > 0.1) ? 'visible' : ''}`}
               style={{
                 top: hoveredIndex !== null
                   ? `calc(${hoveredIndex} * 20%)`
-                  : '0%'
+                  : scroll2to3 > 0.1
+                    ? '0%' // WORKS is at index 0
+                    : '0%'
               }}
             />
           </div>
         </div>
       </nav>
 
-      <div className="left-block" style={{ opacity: textOpacity }}>
-        <div className="title" style={{marginBottom:'30px'}}>FULL STACK <span className='texttrans' style={{transition: 'color 0.3s ease'}}>DEVOPS</span> <br/>ENGINEER </div>
-        <div className="title">CREATIVE <span className='texttrans' style={{transition: 'color 0.3s ease'}}>DESIGNER</span> <br/>& <span className='texttrans' style={{transition: 'color 0.3s ease'}}>DEVELOPER</span></div>
-        <div className="year">©2026</div>
-      </div>
+      {/* Scrollable vertical content layout */}
+      <div 
+        className="scrollable-content"
+        style={{
+          transform: `translateY(${translateYVal}vh)`
+        }}
+      >
+        {/* Section 1: Hero landing */}
+        <div className="section hero-section">
+          {/* Background Scrolling Parallax Text */}
+          <div 
+            className="scroll-text-bg"
+            style={{ opacity: bgTextOpacity }}
+          >
+            <div 
+              className="bg-text-line-1 marquee-ltr"
+              style={{ transform: line1Transform }}
+            >
+              <div className="marquee-content">
+                SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP •&nbsp;
+              </div>
+              <div className="marquee-content">
+                SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP •&nbsp;
+              </div>
+            </div>
+            <div 
+              className="bg-text-line-2 marquee-rtl"
+              style={{ transform: line2Transform }}
+            >
+              <div className="marquee-content">
+                I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. •&nbsp;
+              </div>
+              <div className="marquee-content">
+                I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. •&nbsp;
+              </div>
+            </div>
+          </div>
 
-      <div className="right-block" style={{ opacity: textOpacity }}>
-        <div className="location-label">CURRENTLY BASED IN <br/><a href="https://maps.google.com/?q=Nagpur" target="_blank" rel="noopener noreferrer" className='texttrans' style={{transition: 'color 0.3s ease'}}>NAG</a> | <a href="https://maps.google.com/?q=Ahmedabad" target="_blank" rel="noopener noreferrer" className='texttrans' style={{transition: 'color 0.3s ease'}}>AMD</a></div>
-      </div>
+          <div 
+            className="shrink-wrapper"
+            style={{
+              transform: `scale(${shrinkScaleX}, ${shrinkScale})`,
+              borderRadius: `${shrinkBorderRadius}px`,
+              boxShadow: `rgba(0, 0, 0, ${easedProgress * 0.15}) 0px ${easedProgress * 20}px ${easedProgress * 50}px`,
+            }}
+          >
+            <div 
+              className="shrink-overlay"
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                backgroundColor: 'rgba(60, 60, 60, 0.6)',
+                opacity: easedProgress,
+                zIndex: 4,
+                pointerEvents: 'none'
+              }}
+            />
+            <LiquidDistortion
+              src={hdbgUrl}
+              strength={0.15}
+              radius={120}
+              relaxation={0.95}
+              blur={0.1}
+              opacity={0.10}
+              leftOffset={leftOffset}
+              rightOffset={rightOffset}
+              portraitRef={containerRef}
+              onWebGLActive={setIsWebGLActive}
+              easedProgress={progress1}
+              hollowmineUrl={hollowmineUrl}
+              eyeballUrl={eyeballUrl}
+              eyebgUrl={eyebgUrl}
+              minepicUrl={minepicUrl}
+            />
+            <div 
+              className="portrait-wrap"
+              style={{
+                transform: `translateX(-54%) scaleX(${shrinkScale / shrinkScaleX})`,
+                transformOrigin: 'bottom center'
+              }}
+            >
+              <div 
+                className="portrait-container" 
+                ref={containerRef} 
+                style={{ 
+                  transform: `translateX(${portraitShiftX}px)`,
+                  opacity: isWebGLActive ? 0 : 1,
+                  pointerEvents: isWebGLActive ? 'none' : 'auto'
+                }}
+              >
+                {/* Bottom Layer: Eye backgrounds */}
+                <img
+                  className="eye-bg"
+                  src={eyebgUrl}
+                  alt="Left eye background"
+                  style={{ left: '44.73%', top: '46.54%', opacity: 1 - progress1 }}
+                />
+                <img
+                  className="eye-bg"
+                  src={eyebgUrl}
+                  alt="Right eye background"
+                  style={{ left: '59.44%', top: '47.54%', opacity: 1 - progress1 }}
+                />
 
-      <div className="scroll-pill" style={{ opacity: pillOpacity, pointerEvents: pillOpacity > 0 ? 'auto' : 'none' }}>
-        <span>scroll to unveil magic</span>
+                {/* Middle Layer: Eyeballs */}
+                <img
+                  className="eyeball"
+                  src={eyeballUrl}
+                  alt="Left eyeball"
+                  style={{
+                    left: '44.73%',
+                    top: '46.54%',
+                    transform: `translate(-50%, -50%) translate(${leftOffset.x}px, ${leftOffset.y}px)`,
+                    opacity: 1 - progress1
+                  }}
+                />
+                <img
+                  className="eyeball"
+                  src={eyeballUrl}
+                  alt="Right eyeball"
+                  style={{
+                    left: '59.44%',
+                    top: '47.54%',
+                    transform: `translate(-50%, -50%) translate(${rightOffset.x}px, ${rightOffset.y}px)`,
+                    opacity: 1 - progress1
+                  }}
+                />
+
+                {/* Top Layer: Hollow portrait */}
+                <img
+                  className="portrait-front"
+                  src={hollowmineUrl}
+                  alt="Ojas Dhar Gave portrait"
+                  style={{ opacity: 1 - progress1 }}
+                />
+
+                {/* Solid portrait */}
+                <img
+                  className="portrait-solid"
+                  src={minepicUrl}
+                  alt="Ojas Dhar Gave portrait solid"
+                  style={{
+                    height: '100%',
+                    width: 'auto',
+                    objectFit: 'contain',
+                    display: 'block',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    zIndex: 4,
+                    pointerEvents: 'none',
+                    opacity: progress1
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="left-block" style={{ opacity: textOpacity }}>
+            <div className="title" style={{marginBottom:'30px'}}>FULL STACK <span className='texttrans' style={{transition: 'color 0.3s ease'}}>DEVOPS</span> <br/>ENGINEER </div>
+            <div className="title">CREATIVE <span className='texttrans' style={{transition: 'color 0.3s ease'}}>DESIGNER</span> <br/>& <span className='texttrans' style={{transition: 'color 0.3s ease'}}>DEVELOPER</span></div>
+            <div className="year">©2026</div>
+          </div>
+
+          <div className="right-block" style={{ opacity: textOpacity }}>
+            <div className="location-label">CURRENTLY BASED IN <br/><a href="https://maps.google.com/?q=Nagpur" target="_blank" rel="noopener noreferrer" className='texttrans' style={{transition: 'color 0.3s ease'}}>NAG</a> | <a href="https://maps.google.com/?q=Ahmedabad" target="_blank" rel="noopener noreferrer" className='texttrans' style={{transition: 'color 0.3s ease'}}>AMD</a></div>
+          </div>
+
+          <div className="scroll-pill" style={{ opacity: pillOpacity, pointerEvents: pillOpacity > 0 ? 'auto' : 'none' }}>
+            <span>scroll to unveil magic</span>
+          </div>
+        </div>
+
+        {/* Section 2: Revealed Paragraph */}
+        <div className="section paragraph-section">
+          <div 
+            className="revealed-paragraph-container"
+            style={{ 
+              opacity: progress2,
+              transform: `translate(-50%, calc(-50% + ${(1 - progress2) * 40}px))`,
+              visibility: progress2 > 0 ? 'visible' : 'hidden'
+            }}
+          >
+            <p className="revealed-paragraph">
+              <span className="highlight">Redefining</span> possibilities. <br />
+              Building what <span className="highlight">matters</span>. <br />
+              Creating <span className="highlight">impact</span> through <br />
+              design, <span className="highlight">code</span>, and <br />
+              relentless <span className="highlight">execution</span>.
+            </p>
+          </div>
+        </div>
+
+        {/* Section 3: Works (Horizontal Scroll & Off-White background transition) */}
+        <div className="section works-section">
+          <div 
+            className="works-track"
+            style={{
+              transform: `translateX(${-progress3 * 125}vw)`
+            }}
+          >
+            {/* Vertically stacked Title scrolling with the track */}
+            <div className="works-vertical-title">
+              <span>W</span>
+              <span>O</span>
+              <span>R</span>
+              <span>K</span>
+              <span>S</span>
+            </div>
+
+            {projects.map((project, idx) => (
+              <div 
+                className="work-card" 
+                key={idx}
+                onClick={() => window.open(project.githubUrl, '_blank', 'noopener,noreferrer')}
+              >
+                {/* Card Header */}
+                <div className="work-card-header">
+                  <span className="work-card-project-name">{project.title}</span>
+                  <div className="work-card-header-dots">
+                    <span className="header-dot"></span>
+                    <span className="header-dot"></span>
+                  </div>
+                </div>
+
+                {/* Card Middle: Image/Video Visual */}
+                <div className="work-card-image-wrap" onClick={(e) => e.stopPropagation()}>
+                  {project.renderVisual()}
+                </div>
+
+                {/* Card Bottom: Description, Count, and See More Button */}
+                <div className="work-card-footer-container">
+                  <p className="work-card-desc">{project.description}</p>
+                  
+                  <div className="work-card-footer-row">
+                    <a 
+                      href={project.githubUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="work-card-link-underlined"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {project.title.toLowerCase().replace(/ /g, '-')}
+                    </a>
+                    
+                    <div className="work-card-footer-right" onClick={(e) => e.stopPropagation()}>
+                      <div className="work-card-count">
+                        <svg className="count-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                          <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                        <span>0{idx + 1}/0{projects.length}</span>
+                      </div>
+                      <div className="footer-separator" />
+                      <a 
+                        href={project.githubUrl} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="work-card-btn"
+                      >
+                        See more
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
