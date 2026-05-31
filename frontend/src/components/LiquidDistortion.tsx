@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import hollowmine from '../assets/images/hollowmine.png';
 import eyeball from '../assets/images/eyeball.png';
 import eyebg from '../assets/images/eyebg.png';
+import minepic from '../assets/images/minepic.png';
 
 // Shader code
 const vertexShader = `
@@ -108,6 +109,7 @@ interface LiquidDistortionProps {
   rightOffset?: { x: number; y: number };
   portraitRef?: React.RefObject<HTMLDivElement | null>;
   onWebGLActive?: (active: boolean) => void;
+  easedProgress?: number;
 }
 
 export default function LiquidDistortion({
@@ -120,15 +122,18 @@ export default function LiquidDistortion({
   leftOffset,
   rightOffset,
   portraitRef,
-  onWebGLActive
+  onWebGLActive,
+  easedProgress = 0
 }: LiquidDistortionProps) {
   const leftOffsetRef = useRef(leftOffset);
   const rightOffsetRef = useRef(rightOffset);
+  const easedProgressRef = useRef(easedProgress);
 
   useEffect(() => {
     leftOffsetRef.current = leftOffset;
     rightOffsetRef.current = rightOffset;
-  }, [leftOffset, rightOffset]);
+    easedProgressRef.current = easedProgress;
+  }, [leftOffset, rightOffset, easedProgress]);
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -322,13 +327,15 @@ export default function LiquidDistortion({
     const imgHollow = new Image();
     const imgEyebg = new Image();
     const imgEyeball = new Image();
+    const imgMine = new Image();
 
     let hollowLoaded = false;
     let eyebgLoaded = false;
     let eyeballLoaded = false;
+    let mineLoaded = false;
 
     const checkLoaded = () => {
-      if (hollowLoaded && eyebgLoaded && eyeballLoaded) {
+      if (hollowLoaded && eyebgLoaded && eyeballLoaded && mineLoaded) {
         material.uniforms.uHasPortrait.value = 1.0;
       }
     };
@@ -345,14 +352,20 @@ export default function LiquidDistortion({
       eyeballLoaded = true;
       checkLoaded();
     };
+    imgMine.onload = () => {
+      mineLoaded = true;
+      checkLoaded();
+    };
 
     imgHollow.src = hollowmine;
     imgEyebg.src = eyebg;
     imgEyeball.src = eyeball;
+    imgMine.src = minepic;
 
     if (imgHollow.complete) hollowLoaded = true;
     if (imgEyebg.complete) eyebgLoaded = true;
     if (imgEyeball.complete) eyeballLoaded = true;
+    if (imgMine.complete) mineLoaded = true;
     checkLoaded();
 
     // Update video aspect ratio when metadata loads
@@ -564,16 +577,24 @@ export default function LiquidDistortion({
         const ox2 = (rightOffsetRef.current?.x || 0) * (portW / domWidth);
         const oy2 = (rightOffsetRef.current?.y || -3.5) * (portW / domWidth);
 
-        // Draw backgrounds
+        const progress = easedProgressRef.current;
+
+        // Draw hollow layers (eye backgrounds, eyeballs, hollow portrait) with opacity (1 - progress)
+        portCtx2d.globalAlpha = Math.max(0, 1 - progress);
         portCtx2d.drawImage(imgEyebg, cx1 - bgW / 2, cy1 - bgH / 2, bgW, bgH);
         portCtx2d.drawImage(imgEyebg, cx2 - bgW / 2, cy2 - bgH / 2, bgW, bgH);
 
-        // Draw eyeballs
         portCtx2d.drawImage(imgEyeball, cx1 + ox1 - ebW / 2, cy1 + oy1 - ebH / 2, ebW, ebH);
         portCtx2d.drawImage(imgEyeball, cx2 + ox2 - ebW / 2, cy2 + oy2 - ebH / 2, ebW, ebH);
 
-        // Draw hollow portrait front layer
         portCtx2d.drawImage(imgHollow, 0, 0, portW, portH);
+
+        // Draw solid minepic layer with opacity (progress)
+        portCtx2d.globalAlpha = Math.min(1, progress);
+        portCtx2d.drawImage(imgMine, 0, 0, portW, portH);
+
+        // Reset global alpha
+        portCtx2d.globalAlpha = 1.0;
 
         portraitTexture.needsUpdate = true;
       }

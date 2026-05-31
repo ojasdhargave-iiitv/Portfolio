@@ -17,6 +17,26 @@ const menuItems = [
   'ABOUT'
 ];
 
+// Helper to create cubic-bezier easing function
+function cubicBezier(x1: number, y1: number, x2: number, y2: number) {
+  return function(t: number) {
+    if (t <= 0) return 0;
+    if (t >= 1) return 1;
+    
+    let tGuess = t;
+    for (let i = 0; i < 8; i++) {
+      const x = 3 * Math.pow(1 - tGuess, 2) * tGuess * x1 + 3 * (1 - tGuess) * Math.pow(tGuess, 2) * x2 + Math.pow(tGuess, 3);
+      const dx = 3 * Math.pow(1 - tGuess, 2) * x1 + 6 * (1 - tGuess) * tGuess * (x2 - x1) + 3 * Math.pow(tGuess, 2) * (1 - x2);
+      if (Math.abs(dx) < 1e-6) break;
+      tGuess -= (x - t) / dx;
+    }
+    
+    return 3 * Math.pow(1 - tGuess, 2) * tGuess * y1 + 3 * (1 - tGuess) * Math.pow(tGuess, 2) * y2 + Math.pow(tGuess, 3);
+  };
+}
+
+const ease = cubicBezier(0.25, 1, 0.5, 1);
+
 export default function App() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [isMenuHovered, setIsMenuHovered] = useState(false);
@@ -29,6 +49,10 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [shouldRenderLoader, setShouldRenderLoader] = useState(true);
   const [isWebGLActive, setIsWebGLActive] = useState(false);
+
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const targetScrollRef = useRef(0);
+  const currentScrollRef = useRef(0);
 
   // Asset preloading
   useEffect(() => {
@@ -167,33 +191,286 @@ export default function App() {
     };
   }, []);
 
+  // Scroll tracking with damping (inertia)
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      // More scroll in hand: 0.00035 multiplier gives highly premium, low-sensitivity control
+      const speedMultiplier = 0.00035;
+      let newTarget = targetScrollRef.current + e.deltaY * speedMultiplier;
+      newTarget = Math.max(0, Math.min(1, newTarget));
+      targetScrollRef.current = newTarget;
+    };
+
+    let touchStart = 0;
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        touchStart = e.touches[0].clientY;
+      }
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        const touchCurrent = e.touches[0].clientY;
+        const deltaY = touchStart - touchCurrent;
+        touchStart = touchCurrent;
+        
+        const speedMultiplier = 0.0008;
+        let newTarget = targetScrollRef.current + deltaY * speedMultiplier;
+        newTarget = Math.max(0, Math.min(1, newTarget));
+        targetScrollRef.current = newTarget;
+      }
+    };
+
+    window.addEventListener('wheel', handleWheel, { passive: true });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+
+    return () => {
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+    };
+  }, []);
+
+  // Animation frame loop to smoothly transition currentScroll to targetScroll
+  useEffect(() => {
+    let animationId: number;
+    
+    const updateScroll = () => {
+      const target = targetScrollRef.current;
+      const current = currentScrollRef.current;
+      
+      const lerpFactor = 0.06; // Lower value for smoother and more damped transitions
+      const diff = target - current;
+      
+      if (Math.abs(diff) > 0.0001) {
+        currentScrollRef.current = current + diff * lerpFactor;
+        setScrollProgress(currentScrollRef.current);
+      } else if (current !== target) {
+        currentScrollRef.current = target;
+        setScrollProgress(target);
+      }
+      
+      animationId = requestAnimationFrame(updateScroll);
+    };
+    
+    animationId = requestAnimationFrame(updateScroll);
+    
+    return () => cancelAnimationFrame(animationId);
+  }, []);
+
+  const easedProgress = ease(scrollProgress);
+  
+  // Phase 1: Card shrinks (easedProgress from 0.0 to 0.5)
+  const progress1 = Math.min(1, easedProgress * 2);
+  
+  // Phase 2: Background text scrolls off-screen (easedProgress from 0.5 to 1.0)
+  const progress2 = Math.max(0, (easedProgress - 0.5) * 2);
+
+  const shrinkScale = 1 - progress1 * 0.55; // vertical scale from 1.0 down to 0.45
+  const shrinkScaleX = 1 - progress1 * 0.65; // horizontal scale from 1.0 down to 0.35 (reduces card width additional to height)
+  const shrinkBorderRadius = progress1 * 32; // border radius from 0px to 32px
+  
+  // Opacities
+  const textOpacity = Math.max(0, 1 - progress1 * 1.3); // completely hides towards the end
+  const pillOpacity = Math.max(0, 0.5 - progress1 * 5); // fades very quickly
+
+  // Interpolated text color: from #282C20 (40, 44, 32) to #fffef5 (255, 254, 245)
+  const r = Math.round(40 + (255 - 40) * progress1);
+  const g = Math.round(44 + (254 - 44) * progress1);
+  const b = Math.round(32 + (245 - 32) * progress1);
+  const textColor = `rgb(${r}, ${g}, ${b})`;
+
+  // Scrolling parallax background text calculations
+  const bgTextOpacity = Math.min(progress1 * 1.5, 0.85); // fades in as we scroll (up to 0.85 opacity)
+  const line1Transform = `translateX(${progress2 * 120}vw)`; // slides off right in Phase 2
+  const line2Transform = `translateX(${-progress2 * 120}vw)`; // slides off left in Phase 2
+
   return (
-    <div className="home">
+    <div 
+      className="home"
+      style={{
+        '--text-color': textColor,
+      } as React.CSSProperties}
+    >
       {shouldRenderLoader && (
         <div className={`preloader ${!isLoading ? 'fade-out' : ''}`}>
           <img className="preloader-logo" src={logo} alt="OD Logo" />
           <div className="preloader-text">LOAD OJAS</div>
         </div>
       )}
-      <LiquidDistortion
+
+      <video
         src={hdbg}
-        strength={0.15}
-        radius={120}
-        relaxation={0.95}
-        blur={0.1}
-        opacity={0.10}
-        leftOffset={leftOffset}
-        rightOffset={rightOffset}
-        portraitRef={containerRef}
-        onWebGLActive={setIsWebGLActive}
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="bg-video"
       />
+
+      {/* Background Scrolling Parallax Text */}
+      <div 
+        className="scroll-text-bg"
+        style={{ opacity: bgTextOpacity }}
+      >
+        <div 
+          className="bg-text-line-1 marquee-ltr"
+          style={{ transform: line1Transform }}
+        >
+          <div className="marquee-content">
+            SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP •&nbsp;
+          </div>
+          <div className="marquee-content">
+            SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP •&nbsp;
+          </div>
+        </div>
+        <div 
+          className="bg-text-line-2 marquee-rtl"
+          style={{ transform: line2Transform }}
+        >
+          <div className="marquee-content">
+            I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. •&nbsp;
+          </div>
+          <div className="marquee-content">
+            I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. • I'M OJAS, AN ARTIST BY VIRTUE WHO BUILDS SYSTEMS THAT SCALE AND BUSINESSES THAT DON'T LOSE CUSTOMER TRUST. •&nbsp;
+          </div>
+        </div>
+      </div>
+
+      <div 
+        className="shrink-wrapper"
+        style={{
+          transform: `scale(${shrinkScaleX}, ${shrinkScale})`,
+          borderRadius: `${shrinkBorderRadius}px`,
+          boxShadow: `rgba(0, 0, 0, ${easedProgress * 0.15}) 0px ${easedProgress * 20}px ${easedProgress * 50}px`,
+        }}
+      >
+        <div 
+          className="shrink-overlay"
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(60, 60, 60, 0.6)',
+            opacity: easedProgress,
+            zIndex: 4,
+            pointerEvents: 'none'
+          }}
+        />
+        <LiquidDistortion
+          src={hdbg}
+          strength={0.15}
+          radius={120}
+          relaxation={0.95}
+          blur={0.1}
+          opacity={0.10}
+          leftOffset={leftOffset}
+          rightOffset={rightOffset}
+          portraitRef={containerRef}
+          onWebGLActive={setIsWebGLActive}
+          easedProgress={easedProgress}
+        />
+        <div 
+          className="portrait-wrap"
+          style={{
+            transform: `translateX(-54%) scaleX(${shrinkScale / shrinkScaleX})`,
+            transformOrigin: 'bottom center'
+          }}
+        >
+          <div 
+            className="portrait-container" 
+            ref={containerRef} 
+            style={{ 
+              transform: `translateX(${portraitShiftX}px)`,
+              opacity: isWebGLActive ? 0 : 1,
+              pointerEvents: isWebGLActive ? 'none' : 'auto'
+            }}
+          >
+            {/* Bottom Layer: Eye backgrounds */}
+            <img
+              className="eye-bg"
+              src={eyebg}
+              alt="Left eye background"
+              style={{ left: '44.73%', top: '46.54%', opacity: 1 - easedProgress }}
+            />
+            <img
+              className="eye-bg"
+              src={eyebg}
+              alt="Right eye background"
+              style={{ left: '59.44%', top: '47.54%', opacity: 1 - easedProgress }}
+            />
+
+            {/* Middle Layer: Eyeballs */}
+            <img
+              className="eyeball"
+              src={eyeball}
+              alt="Left eyeball"
+              style={{
+                left: '44.73%',
+                top: '46.54%',
+                transform: `translate(-50%, -50%) translate(${leftOffset.x}px, ${leftOffset.y}px)`,
+                opacity: 1 - easedProgress
+              }}
+            />
+            <img
+              className="eyeball"
+              src={eyeball}
+              alt="Right eyeball"
+              style={{
+                left: '59.44%',
+                top: '47.54%',
+                transform: `translate(-50%, -50%) translate(${rightOffset.x}px, ${rightOffset.y}px)`,
+                opacity: 1 - easedProgress
+              }}
+            />
+
+            {/* Top Layer: Hollow portrait */}
+            <img
+              className="portrait-front"
+              src={hollowmine}
+              alt="Ojas Dhar Gave portrait"
+              style={{ opacity: 1 - easedProgress }}
+            />
+
+            {/* Solid portrait */}
+            <img
+              className="portrait-solid"
+              src={minepic}
+              alt="Ojas Dhar Gave portrait solid"
+              style={{
+                height: '100%',
+                width: 'auto',
+                objectFit: 'contain',
+                display: 'block',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                zIndex: 4,
+                pointerEvents: 'none',
+                opacity: easedProgress
+              }}
+            />
+          </div>
+        </div>
+      </div>
+
       <div className="name-block">
         <span className='texttrans' style={{transition: 'color 0.3s ease'}}>OJAS</span>
         <span className="name-block2">DHAR</span>
         <span className="name-block2" style={{fontSize: '25.5px'}}>GAVE</span>
       </div>
 
-      <img className="brand-logo" src={logo} alt="OD logo" />
+      <img 
+        className="brand-logo" 
+        src={logo} 
+        alt="OD logo" 
+        style={{
+          filter: easedProgress > 0.5 ? 'brightness(0) invert(1)' : 'none'
+        }}
+      />
 
       <nav 
         className="menu" 
@@ -231,79 +508,17 @@ export default function App() {
         </div>
       </nav>
 
-      <div className="portrait-wrap">
-        {/*
-        <img
-          className="portrait"
-          src={minepic}
-          alt="Ojas Dhar Gave portrait"
-        />
-        */}
-        <div 
-          className="portrait-container" 
-          ref={containerRef} 
-          style={{ 
-            transform: `translateX(${portraitShiftX}px)`,
-            opacity: isWebGLActive ? 0 : 1,
-            pointerEvents: isWebGLActive ? 'none' : 'auto'
-          }}
-        >
-          {/* Bottom Layer: Eye backgrounds */}
-          <img
-            className="eye-bg"
-            src={eyebg}
-            alt="Left eye background"
-            style={{ left: '44.73%', top: '46.54%' }}
-          />
-          <img
-            className="eye-bg"
-            src={eyebg}
-            alt="Right eye background"
-            style={{ left: '59.44%', top: '47.54%' }}
-          />
-
-          {/* Middle Layer: Eyeballs */}
-          <img
-            className="eyeball"
-            src={eyeball}
-            alt="Left eyeball"
-            style={{
-              left: '44.73%',
-              top: '46.54%',
-              transform: `translate(-50%, -50%) translate(${leftOffset.x}px, ${leftOffset.y}px)`
-            }}
-          />
-          <img
-            className="eyeball"
-            src={eyeball}
-            alt="Right eyeball"
-            style={{
-              left: '59.44%',
-              top: '47.54%',
-              transform: `translate(-50%, -50%) translate(${rightOffset.x}px, ${rightOffset.y}px)`
-            }}
-          />
-
-          {/* Top Layer: Hollow portrait */}
-          <img
-            className="portrait-front"
-            src={hollowmine}
-            alt="Ojas Dhar Gave portrait"
-          />
-        </div>
-      </div>
-
-      <div className="left-block">
+      <div className="left-block" style={{ opacity: textOpacity }}>
         <div className="title" style={{marginBottom:'30px'}}>FULL STACK <span className='texttrans' style={{transition: 'color 0.3s ease'}}>DEVOPS</span> <br/>ENGINEER </div>
         <div className="title">CREATIVE <span className='texttrans' style={{transition: 'color 0.3s ease'}}>DESIGNER</span> <br/>& <span className='texttrans' style={{transition: 'color 0.3s ease'}}>DEVELOPER</span></div>
         <div className="year">©2026</div>
       </div>
 
-      <div className="right-block">
+      <div className="right-block" style={{ opacity: textOpacity }}>
         <div className="location-label">CURRENTLY BASED IN <br/><a href="https://maps.google.com/?q=Nagpur" target="_blank" rel="noopener noreferrer" className='texttrans' style={{transition: 'color 0.3s ease'}}>NAG</a> | <a href="https://maps.google.com/?q=Ahmedabad" target="_blank" rel="noopener noreferrer" className='texttrans' style={{transition: 'color 0.3s ease'}}>AMD</a></div>
       </div>
 
-      <div className="scroll-pill">
+      <div className="scroll-pill" style={{ opacity: pillOpacity, pointerEvents: pillOpacity > 0 ? 'auto' : 'none' }}>
         <span>scroll to unveil magic</span>
       </div>
     </div>
