@@ -7,9 +7,33 @@ import eyeball from './assets/images/eyeball.png';
 import eyebg from './assets/images/eyebg.png';
 import hdbg from './assets/videos/hdbg.mp4';
 import intersect from './assets/images/Intersect.png';
+import behanceIcon from './assets/images/BEHANCE.png';
+import gmailIcon from './assets/images/GMAIL.webp';
+import instagramIcon from './assets/images/instagram.webp';
 // @ts-ignore
 import movesCabseFont from './assets/fonts/MovesCabse-Regular.ttf';
 import LiquidDistortion from './components/LiquidDistortion';
+
+// PortionUp images
+import portionup1 from './assets/images/portionup/1.png';
+import portionup2 from './assets/images/portionup/2.png';
+import portionup3 from './assets/images/portionup/3.png';
+import portionup4 from './assets/images/portionup/4.png';
+import portionup5 from './assets/images/portionup/5.png';
+
+// Citrusaas images
+import citrusaas1 from './assets/images/citrusaas/1.png';
+import citrusaas2 from './assets/images/citrusaas/2.png';
+import citrusaas3 from './assets/images/citrusaas/3.png';
+import citrusaas4 from './assets/images/citrusaas/4.png';
+
+// Self Driving Car images
+import selfdrivingcar1 from './assets/images/selfdrivingcar/1.png';
+
+// Citrova images
+import citrova1 from './assets/images/citrova/1.png';
+import citrova2 from './assets/images/citrova/2.png';
+
 
 const menuItems = [
   'WORKS',
@@ -109,8 +133,8 @@ const educationData = [
 const socialPlatforms = [
   {
     name: "INSTAGRAM",
-    handle: "@ojasdhargave",
-    url: "https://instagram.com",
+    handle: "@thenameis_ojas",
+    url: "https://www.instagram.com/thenameis_ojas/",
     color: "#E1306C",
     glow: "rgba(225, 48, 108, 0.35)",
     className: "card-insta",
@@ -122,17 +146,13 @@ const socialPlatforms = [
     rotateDeg: -12,
     yOffset: 30,
     renderIcon: () => (
-      <svg className="social-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-      </svg>
+      <img src={instagramIcon} alt="Instagram" className="social-icon-INSTA" />
     )
   },
   {
     name: "LINKEDIN",
     handle: "Ojas Dhargave",
-    url: "https://linkedin.com",
+    url: "https://www.linkedin.com/in/ojas-dhargave-252990210",
     color: "#0077B5",
     glow: "rgba(0, 119, 181, 0.35)",
     className: "card-linkedin",
@@ -145,7 +165,7 @@ const socialPlatforms = [
     yOffset: 10,
     renderIcon: () => (
       <svg className="social-icon" width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
       </svg>
     )
   },
@@ -153,10 +173,10 @@ const socialPlatforms = [
     name: "GMAIL",
     handle: "ojasdhargave@gmail.com",
     url: "mailto:ojasdhargave@gmail.com",
-    color: "#EA4335",
+    color: "#b9463cff",
     glow: "rgba(234, 67, 53, 0.35)",
     className: "card-gmail",
-    bgColor: "#EA4335",
+    bgColor: "#ca1100ff",
     textColor: "#ffffff",
     iconColor: "#ffffff",
     borderColor: "rgba(255, 255, 255, 0.1)",
@@ -164,16 +184,13 @@ const socialPlatforms = [
     rotateDeg: 0,
     yOffset: 0,
     renderIcon: () => (
-      <svg className="social-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-        <polyline points="22,6 12,13 2,6"></polyline>
-      </svg>
+      <img src={gmailIcon} alt="Gmail" className="social-icon" />
     )
   },
   {
     name: "GITHUB",
-    handle: "ojasdhargave",
-    url: "https://github.com/ojasdhargave",
+    handle: "ojasdhargave-iiitv",
+    url: "https://github.com/ojasdhargave-iiitv",
     color: "#ffffff",
     glow: "rgba(255, 255, 255, 0.25)",
     className: "card-github",
@@ -186,14 +203,14 @@ const socialPlatforms = [
     yOffset: 10,
     renderIcon: () => (
       <svg className="social-icon" width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
       </svg>
     )
   },
   {
     name: "BEHANCE",
-    handle: "ojasdhargave",
-    url: "https://behance.net",
+    handle: "jasdhargave",
+    url: "https://www.behance.net/jasdhargave",
     color: "#0057ff",
     glow: "rgba(0, 87, 255, 0.35)",
     className: "card-behance",
@@ -205,82 +222,145 @@ const socialPlatforms = [
     rotateDeg: 12,
     yOffset: 30,
     renderIcon: () => (
-      <svg className="social-icon" width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M9 13H5v2.5h4c.83 0 1.5-.67 1.5-1.5s-.67-1-1.5-1zm-.5-5H5v2.5h3.5c.83 0 1.5-.67 1.5-1.5s-.67-1.25-1.5-1.25zM22 2H2v20h20V2zm-9 13.5c0 2.48-2.02 4.5-4.5 4.5H4V8h4.5C10.98 8 13 10.02 13 12.5c0 1.09-.39 2.08-1.03 2.86.64.13 1.03.64 1.03 1.14zm7.5-3.5h-5c-.83 0-1.5.67-1.5 1.5v2c0 .83.67 1.5 1.5 1.5h5c.83 0 1.5-.67 1.5-1.5v-2c0-.83-.67-1.5-1.5-1.5zm-5 1.5h3v1h-3v-1zm5-4.5h-5v1.5h5V8.5z"/>
-      </svg>
+      <img src={behanceIcon} alt="Behance" className="social-icon" />
     )
   }
 ];
+
+interface ProjectSlideshowProps {
+  images: string[];
+  githubUrl: string;
+}
+
+function ProjectSlideshow({ images, githubUrl }: ProjectSlideshowProps) {
+  const [currentIdx, setCurrentIdx] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    if (images.length <= 1 || isHovered) return;
+
+    const interval = setInterval(() => {
+      setCurrentIdx((prev) => (prev + 1) % images.length);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [images, isHovered]);
+
+  const handlePrev = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentIdx((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  const handleNext = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentIdx((prev) => (prev + 1) % images.length);
+  };
+
+  const handleDotClick = (idx: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentIdx(idx);
+  };
+
+  const handleImageClick = () => {
+    window.open(githubUrl, '_blank', 'noopener,noreferrer');
+  };
+
+  return (
+    <div
+      className="project-slideshow"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={handleImageClick}
+    >
+      {images.map((img, idx) => (
+        <img
+          key={img}
+          src={img}
+          alt={`Slide ${idx + 1}`}
+          className={`slideshow-img ${idx === currentIdx ? 'active' : ''}`}
+        />
+      ))}
+
+      <div className="slideshow-overlay" />
+
+      {images.length > 1 && (
+        <>
+          <button
+            className="slideshow-arrow prev"
+            onClick={handlePrev}
+            aria-label="Previous image"
+          >
+            ‹
+          </button>
+          <button
+            className="slideshow-arrow next"
+            onClick={handleNext}
+            aria-label="Next image"
+          >
+            ›
+          </button>
+
+          <div className="slideshow-dots">
+            {images.map((_, idx) => (
+              <span
+                key={idx}
+                className={`slideshow-dot ${idx === currentIdx ? 'active' : ''}`}
+                onClick={(e) => handleDotClick(idx, e)}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
 
 const projects = [
   {
-    title: "F1 TELEMETRY GRAPH",
-    tag: "REAL-TIME DATA STREAMING / NEON DASHBOARD",
-    description: "Real-time high-speed data visualizer for Formula 1 telemetric metrics using WebSockets.",
-    githubUrl: "https://github.com/ojasdhargave/f1-telemetry-dashboard",
-    renderVisual: () => (
-      <div className="project-visual f1-telemetry-visual">
-        <div className="f1-grid" />
-        <div className="f1-dial">
-          <div className="f1-dial-inner">330</div>
-        </div>
-      </div>
-    )
+    title: "PortionUp: Automated Meal Nutrient Estimator",
+    shortName: "portionup",
+    tag: "REAL-TIME FOOD DETECTION & PORTION TRACKING",
+    description: "Built with YOLO & OpenCV achieving 88% mAP. Mapped detected items to calories & macronutrients with <10% variance and 35% latency reduction.",
+    githubUrl: "https://github.com/ojasdhargave-iiitv/portionup",
+    images: [portionup1, portionup2, portionup3, portionup4, portionup5],
+    techStack: ["Python", "YOLO", "OpenCV", "FastAPI", "React Native", "TypeScript", "React"]
   },
   {
-    title: "CORE BALANCER",
-    tag: "DISTRIBUTED CLOUD ROUTER / SYSTEM INFRA",
-    description: "Distributed request router with active load-balancing algorithms and system status dashboards.",
-    githubUrl: "https://github.com/ojasdhargave/core-balancer",
-    renderVisual: () => (
-      <div className="project-visual cloud-balancer-visual">
-        <div className="balancer-node" style={{ left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }} />
-        <div className="balancer-subnode" style={{ left: '20%', top: '30%' }} />
-        <div className="balancer-subnode" style={{ left: '80%', top: '30%' }} />
-        <div className="balancer-subnode" style={{ left: '30%', top: '70%' }} />
-        <div className="balancer-subnode" style={{ left: '70%', top: '70%' }} />
-        <div className="balancer-line" style={{ width: '42%', transform: 'rotate(-33deg)', left: '20%', top: '30%', transformOrigin: 'left top' }} />
-        <div className="balancer-line" style={{ width: '42%', transform: 'rotate(33deg)', left: '50%', top: '50%', transformOrigin: 'left top' }} />
-        <div className="balancer-line" style={{ width: '36%', transform: 'rotate(53deg)', left: '20%', top: '30%', transformOrigin: 'left top' }} />
-        <div className="balancer-line" style={{ width: '36%', transform: 'rotate(-53deg)', left: '50%', top: '50%', transformOrigin: 'left top' }} />
-      </div>
-    )
+    title: "SaaS Backend Boilerplate IDE",
+    shortName: "saas-boilerplate",
+    tag: "MODULAR BOILERPLATE ENGINE & INTEGRATED IDE",
+    description: "Automates production boilerplate with auth, RBAC, DB, and payments. In-browser editor with compilation + execution runtime.",
+    githubUrl: "https://github.com/ojasdhargave-iiitv/CitruSaaS",
+    images: [citrusaas1, citrusaas2, citrusaas3, citrusaas4],
+    techStack: ["TypeScript", "React", "Node.js", "Express", "Docker", "PostgreSQL"]
   },
   {
-    title: "AURA DESIGN STUDIO",
-    tag: "CREATIVE DESIGN & LAYOUT / BRAND PORTAL",
-    description: "Interactive 3D web showcase incorporating physics engines, fluid shaders, and modern layouts.",
-    githubUrl: "https://github.com/ojasdhargave/aura-design-studio",
-    renderVisual: () => (
-      <div className="project-visual aura-studio-visual">
-        <div className="aura-sphere" />
-      </div>
-    )
+    title: "Self Driving Car",
+    shortName: "self-driving-car",
+    tag: "VANILLA JS NEURAL NETWORK & AUTONOMOUS TRAFFIC",
+    description: "Implemented entirely in vanilla JavaScript with zero library dependencies. Features ray-casting sensors and neural path finding.",
+    githubUrl: "https://github.com/ojasdhargave-iiitv/Self_driving_Car",
+    images: [selfdrivingcar1],
+    techStack: ["JavaScript", "Neural Networks"]
   },
   {
-    title: "NEURAL DRIFT SIM",
-    tag: "SELF-DRIVING AI AGENT / PYTHON SYSTEM",
-    description: "Deep reinforcement learning driving simulator simulating path-finding AI agents in real-time.",
-    githubUrl: "https://github.com/ojasdhargave/neural-drift-simulator",
-    renderVisual: () => (
-      <div className="project-visual neural-drift-visual">
-        <div className="neural-core">
-          <div className="balancer-node" style={{ position: 'relative', margin: 0 }} />
-        </div>
-        <div className="neural-wave" style={{ animationDelay: '0s' }} />
-        <div className="neural-wave" style={{ animationDelay: '0.8s' }} />
-        <div className="neural-wave" style={{ animationDelay: '1.6s' }} />
-      </div>
-    )
+    title: "Citrova",
+    shortName: "citrova",
+    tag: "ORGAN DONATION & TRANSPLANT MANAGEMENT",
+    description: "Full-stack platform streamlining transplant tracking workflows. Integrated Matplotlib & NumPy for real-time statistical insights.",
+    githubUrl: "https://github.com/ojasdhargave-iiitv/Citrova-OrganDonation-Procurement-dbmsProject",
+    images: [citrova1, citrova2],
+    techStack: ["Python", "Flask", "MySQL", "HTML", "Bootstrap", "Matplotlib", "NumPy"]
   }
 ];
 
+
 // Helper to create cubic-bezier easing function
 function cubicBezier(x1: number, y1: number, x2: number, y2: number) {
-  return function(t: number) {
+  return function (t: number) {
     if (t <= 0) return 0;
     if (t >= 1) return 1;
-    
+
     let tGuess = t;
     for (let i = 0; i < 8; i++) {
       const x = 3 * Math.pow(1 - tGuess, 2) * tGuess * x1 + 3 * (1 - tGuess) * Math.pow(tGuess, 2) * x2 + Math.pow(tGuess, 3);
@@ -288,7 +368,7 @@ function cubicBezier(x1: number, y1: number, x2: number, y2: number) {
       if (Math.abs(dx) < 1e-6) break;
       tGuess -= (x - t) / dx;
     }
-    
+
     return 3 * Math.pow(1 - tGuess, 2) * tGuess * y1 + 3 * (1 - tGuess) * Math.pow(tGuess, 2) * y2 + Math.pow(tGuess, 3);
   };
 }
@@ -364,7 +444,7 @@ export default function App() {
       try {
         const response = await fetch(asset.src);
         if (!response.ok) throw new Error(`HTTP error ${response.status}`);
-        
+
         const reader = response.body?.getReader();
         if (!reader) {
           // Fallback if ReadableStream reader is not available
@@ -376,7 +456,7 @@ export default function App() {
 
         const chunks: Uint8Array[] = [];
         let loaded = 0;
-        
+
         while (true) {
           const { done, value } = await reader.read();
           if (done) break;
@@ -556,7 +636,7 @@ export default function App() {
 
     window.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseleave', handleMouseLeave);
-    
+
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseleave', handleMouseLeave);
@@ -588,7 +668,7 @@ export default function App() {
         const touchCurrent = e.touches[0].clientY;
         const deltaY = touchStart - touchCurrent;
         touchStart = touchCurrent;
-        
+
         const speedMultiplier = 0.0008;
         let newTarget = targetScrollRef.current + deltaY * speedMultiplier;
         newTarget = Math.max(0, Math.min(6.5, newTarget));
@@ -610,14 +690,14 @@ export default function App() {
   // Animation frame loop to smoothly transition currentScroll to targetScroll
   useEffect(() => {
     let animationId: number;
-    
+
     const updateScroll = () => {
       const target = targetScrollRef.current;
       const current = currentScrollRef.current;
-      
+
       const lerpFactor = 0.06; // Lower value for smoother and more damped transitions
       const diff = target - current;
-      
+
       if (Math.abs(diff) > 0.0001) {
         currentScrollRef.current = current + diff * lerpFactor;
         setScrollProgress(currentScrollRef.current);
@@ -625,20 +705,20 @@ export default function App() {
         currentScrollRef.current = target;
         setScrollProgress(target);
       }
-      
+
       animationId = requestAnimationFrame(updateScroll);
     };
-    
+
     animationId = requestAnimationFrame(updateScroll);
-    
+
     return () => cancelAnimationFrame(animationId);
   }, []);
 
   const easedProgress = ease(Math.min(1, scrollProgress));
-  
+
   // Phase 1: Card shrinks (easedProgress from 0.0 to 0.5)
   const progress1 = Math.min(1, easedProgress * 2);
-  
+
   // Phase 2: Background text scrolls off-screen (easedProgress from 0.5 to 1.0)
   const progress2 = Math.max(0, (easedProgress - 0.5) * 2);
 
@@ -654,11 +734,11 @@ export default function App() {
   const shrinkScale = 1 - progress1 * 0.55; // vertical scale from 1.0 down to 0.45
   const shrinkScaleX = 1 - progress1 * 0.65; // horizontal scale from 1.0 down to 0.35 (reduces card width additional to height)
   const shrinkBorderRadius = progress1 * 32; // border radius from 0px to 32px
-  
+
   // Opacities
   const textOpacity = Math.max(0, 1 - progress1 * 1.3); // completely hides towards the end
   const pillOpacity = Math.max(0, 0.5 - progress1 * 5); // fades very quickly
-  
+
   // Interpolated text color: from #282C20 (40, 44, 32) to #fffef5 (255, 254, 245)
   const r = Math.round(40 + (255 - 40) * progress1);
   const g = Math.round(44 + (254 - 44) * progress1);
@@ -694,10 +774,10 @@ export default function App() {
       ? 'none'
       : scroll4to5 > 0.5
         ? 'brightness(0) invert(1)'
-        : scroll2to3 > 0.5 
-          ? 'none' 
-          : easedProgress > 0.5 
-            ? 'brightness(0) invert(1)' 
+        : scroll2to3 > 0.5
+          ? 'none'
+          : easedProgress > 0.5
+            ? 'brightness(0) invert(1)'
             : 'none';
 
   // Vertical translation value (Hero offset is 0, Section 2 is -100, Section 3 is -200, Section 4 is -300, Section 5 is -360)
@@ -749,7 +829,7 @@ export default function App() {
   const contactOpacity = contactEased;
 
   return (
-    <div 
+    <div
       className="home"
       style={{
         '--text-color': textColor,
@@ -780,16 +860,16 @@ export default function App() {
       />
 
       {/* Fixed Sticky Header Elements (stationary like in reference image) */}
-      <div className="name-block" onClick={() => scrollToSection(0)} style={{cursor: 'pointer'}}>
-        <span className='texttrans' style={{transition: 'color 0.3s ease'}}>OJAS</span>
+      <div className="name-block" onClick={() => scrollToSection(0)} style={{ cursor: 'pointer' }}>
+        <span className='texttrans' style={{ transition: 'color 0.3s ease' }}>OJAS</span>
         <span className="name-block2">DHAR</span>
-        <span className="name-block2" style={{fontSize: '25.5px'}}>GAVE</span>
+        <span className="name-block2" style={{ fontSize: '25.5px' }}>GAVE</span>
       </div>
 
-      <img 
-        className="brand-logo" 
-        src={logoUrl} 
-        alt="OD logo" 
+      <img
+        className="brand-logo"
+        src={logoUrl}
+        alt="OD logo"
         onClick={() => scrollToSection(0)}
         style={{
           filter: logoFilter,
@@ -797,8 +877,8 @@ export default function App() {
         }}
       />
 
-      <nav 
-        className="menu" 
+      <nav
+        className="menu"
         aria-label="Primary"
         onMouseEnter={() => setIsMenuHovered(true)}
         onMouseLeave={() => {
@@ -812,7 +892,7 @@ export default function App() {
               const isSectionHighlighted = (activeSectionIndex === index && hoveredIndex === null);
               const isActive = (hoveredIndex === index) || isSectionHighlighted;
               return (
-                <li 
+                <li
                   key={item}
                   onMouseEnter={() => setHoveredIndex(index)}
                   onClick={() => {
@@ -830,9 +910,9 @@ export default function App() {
               );
             })}
           </ul>
-          
+
           <div className={`slider-track ${isMenuHovered || activeSectionIndex !== -1 ? 'visible' : ''}`}>
-            <div 
+            <div
               className={`slider-thumb ${(hoveredIndex !== null || activeSectionIndex !== -1) ? 'visible' : ''}`}
               style={{
                 top: hoveredIndex !== null
@@ -847,7 +927,7 @@ export default function App() {
       </nav>
 
       {/* Scrollable vertical content layout */}
-      <div 
+      <div
         className="scrollable-content"
         style={{
           transform: `translateY(${translateYVal}vh)`
@@ -856,11 +936,11 @@ export default function App() {
         {/* Section 1: Hero landing */}
         <div className="section hero-section">
           {/* Background Scrolling Parallax Text */}
-          <div 
+          <div
             className="scroll-text-bg"
             style={{ opacity: bgTextOpacity }}
           >
-            <div 
+            <div
               className="bg-text-line-1 marquee-ltr"
               style={{ transform: line1Transform }}
             >
@@ -871,7 +951,7 @@ export default function App() {
                 SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP • SYSTEMS THAT SCALE, PRODUCTS THAT SHIP •&nbsp;
               </div>
             </div>
-            <div 
+            <div
               className="bg-text-line-2 marquee-rtl"
               style={{ transform: line2Transform }}
             >
@@ -884,7 +964,7 @@ export default function App() {
             </div>
           </div>
 
-          <div 
+          <div
             className="shrink-wrapper"
             style={{
               transform: `scale(${shrinkScaleX}, ${shrinkScale})`,
@@ -892,7 +972,7 @@ export default function App() {
               boxShadow: `rgba(0, 0, 0, ${easedProgress * 0.15}) 0px ${easedProgress * 20}px ${easedProgress * 50}px`,
             }}
           >
-            <div 
+            <div
               className="shrink-overlay"
               style={{
                 position: 'absolute',
@@ -923,17 +1003,17 @@ export default function App() {
               eyebgUrl={eyebgUrl}
               minepicUrl={minepicUrl}
             />
-            <div 
+            <div
               className="portrait-wrap"
               style={{
                 transform: `translateX(-54%) scaleX(${shrinkScale / shrinkScaleX})`,
                 transformOrigin: 'bottom center'
               }}
             >
-              <div 
-                className="portrait-container" 
-                ref={containerRef} 
-                style={{ 
+              <div
+                className="portrait-container"
+                ref={containerRef}
+                style={{
                   transform: `translateX(${portraitShiftX}px)`,
                   opacity: isWebGLActive ? 0 : 1,
                   pointerEvents: isWebGLActive ? 'none' : 'auto'
@@ -1008,13 +1088,13 @@ export default function App() {
           </div>
 
           <div className="left-block" style={{ opacity: textOpacity }}>
-            <div className="title" style={{marginBottom:'30px'}}>FULL STACK <span className='texttrans' style={{transition: 'color 0.3s ease'}}>DEVOPS</span> <br/>ENGINEER </div>
-            <div className="title">CREATIVE <span className='texttrans' style={{transition: 'color 0.3s ease'}}>DESIGNER</span> <br/>& <span className='texttrans' style={{transition: 'color 0.3s ease'}}>DEVELOPER</span></div>
+            <div className="title" style={{ marginBottom: '30px' }}>FULL STACK <span className='texttrans' style={{ transition: 'color 0.3s ease' }}>DEVOPS</span> <br />ENGINEER </div>
+            <div className="title">CREATIVE <span className='texttrans' style={{ transition: 'color 0.3s ease' }}>DESIGNER</span> <br />& <span className='texttrans' style={{ transition: 'color 0.3s ease' }}>DEVELOPER</span></div>
             <div className="year">©2026</div>
           </div>
 
           <div className="right-block" style={{ opacity: textOpacity }}>
-            <div className="location-label">CURRENTLY BASED IN <br/><a href="https://maps.google.com/?q=Nagpur" target="_blank" rel="noopener noreferrer" className='texttrans' style={{transition: 'color 0.3s ease'}}>NAG</a> | <a href="https://maps.google.com/?q=Ahmedabad" target="_blank" rel="noopener noreferrer" className='texttrans' style={{transition: 'color 0.3s ease'}}>AMD</a></div>
+            <div className="location-label">CURRENTLY BASED IN <br /><a href="https://maps.google.com/?q=Nagpur" target="_blank" rel="noopener noreferrer" className='texttrans' style={{ transition: 'color 0.3s ease' }}>NAG</a> | <a href="https://maps.google.com/?q=Ahmedabad" target="_blank" rel="noopener noreferrer" className='texttrans' style={{ transition: 'color 0.3s ease' }}>AMD</a></div>
           </div>
 
           <div className="scroll-pill" style={{ opacity: pillOpacity, pointerEvents: pillOpacity > 0 ? 'auto' : 'none' }}>
@@ -1024,9 +1104,9 @@ export default function App() {
 
         {/* Section 2: Revealed Paragraph */}
         <div className="section paragraph-section">
-          <div 
+          <div
             className="revealed-paragraph-container"
-            style={{ 
+            style={{
               opacity: progress2,
               transform: `translate(-50%, calc(-50% + ${(1 - progress2) * 40}px))`,
               visibility: progress2 > 0 ? 'visible' : 'hidden'
@@ -1044,7 +1124,7 @@ export default function App() {
 
         {/* Section 3: Works (Horizontal Scroll & Off-White background transition) */}
         <div className="section works-section">
-          <div 
+          <div
             className="works-track"
             style={{
               transform: `translateX(${-progress3 * 125}vw)`
@@ -1060,8 +1140,8 @@ export default function App() {
             </div>
 
             {projects.map((project, idx) => (
-              <div 
-                className="work-card" 
+              <div
+                className="work-card"
                 key={idx}
                 onClick={() => window.open(project.githubUrl, '_blank', 'noopener,noreferrer')}
               >
@@ -1074,38 +1154,44 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Card Middle: Image/Video Visual */}
+                {/* Card Middle: Image Slideshow */}
                 <div className="work-card-image-wrap" onClick={(e) => e.stopPropagation()}>
-                  {project.renderVisual()}
+                  <ProjectSlideshow images={project.images} githubUrl={project.githubUrl} />
                 </div>
 
-                {/* Card Bottom: Description, Count, and See More Button */}
+                {/* Card Bottom: Description, Tech Stack, Count, and See More Button */}
                 <div className="work-card-footer-container">
                   <p className="work-card-desc">{project.description}</p>
-                  
+
+                  <div className="work-card-tech-stack" onClick={(e) => e.stopPropagation()}>
+                    {project.techStack.map((tech) => (
+                      <span key={tech} className="tech-badge">{tech}</span>
+                    ))}
+                  </div>
+
                   <div className="work-card-footer-row">
-                    <a 
-                      href={project.githubUrl} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
+                    <a
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="work-card-link-underlined"
                       onClick={(e) => e.stopPropagation()}
                     >
-                      {project.title.toLowerCase().replace(/ /g, '-')}
+                      {project.shortName}
                     </a>
-                    
+
                     <div className="work-card-footer-right" onClick={(e) => e.stopPropagation()}>
                       <div className="work-card-count">
                         <svg className="count-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                          <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round"/>
+                          <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                         <span>0{idx + 1}/0{projects.length}</span>
                       </div>
                       <div className="footer-separator" />
-                      <a 
-                        href={project.githubUrl} 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="work-card-btn"
                       >
                         See more
@@ -1122,7 +1208,7 @@ export default function App() {
         <div className="section tech-stack-section">
           <div className="tech-stack-container">
             {/* Horizontal heading TECH STACKS in one line at the top of the section */}
-            <div 
+            <div
               className="tech-stack-header-title"
               style={{
                 transform: `translateY(${(1 - Math.min(1.0, scroll3to4 * 1.5)) * -30}px)`,
@@ -1136,12 +1222,12 @@ export default function App() {
               {techStackCategories.map((category, catIdx) => {
                 const staggerStart = 0.45 + catIdx * 0.08;
                 const staggerEnd = Math.min(1.0, staggerStart + 0.45);
-                
+
                 let localProgress = 0;
                 if (scroll3to4 > staggerStart) {
                   localProgress = Math.min(1.0, (scroll3to4 - staggerStart) / (staggerEnd - staggerStart));
                 }
-                
+
                 const easedLocal = localProgress * (2 - localProgress);
 
                 const headingTransform = `translateX(${(1 - easedLocal) * -500}px)`;
@@ -1152,7 +1238,7 @@ export default function App() {
 
                 return (
                   <div className="tech-stack-row" key={catIdx}>
-                    <div 
+                    <div
                       className="tech-category-header"
                       style={{
                         transform: headingTransform,
@@ -1163,7 +1249,7 @@ export default function App() {
                       <h3 className="tech-category-title">{category.title}</h3>
                     </div>
 
-                    <div 
+                    <div
                       className="tech-icons-box"
                       style={{
                         transform: gridTransform,
@@ -1172,11 +1258,11 @@ export default function App() {
                     >
                       {category.skills.map((skill, skillIdx) => (
                         <div className="tech-icon-cell" key={skillIdx}>
-                          <img 
-                            src={`https://skillicons.dev/icons?i=${skill.key}`} 
-                            width="45" 
-                            height="45" 
-                            alt={skill.name} 
+                          <img
+                            src={`https://skillicons.dev/icons?i=${skill.key}`}
+                            width="45"
+                            height="45"
+                            alt={skill.name}
                             className="tech-icon-img"
                           />
                           <span className="tech-icon-name">{skill.name}</span>
@@ -1194,7 +1280,7 @@ export default function App() {
         <div className="section education-section">
           <div className="education-container">
             {/* Heading EDUCATION in one line at the top of the section */}
-            <div 
+            <div
               className="education-header-title"
               style={{
                 transform: `translateY(${(1 - Math.min(1.0, scroll4to5 * 1.5)) * -30}px)`,
@@ -1208,19 +1294,19 @@ export default function App() {
               {educationData.map((item, idx) => {
                 const staggerStart = 0.4 + idx * 0.1;
                 const staggerEnd = Math.min(1.0, staggerStart + 0.45);
-                
+
                 let localProgress = 0;
                 if (scroll4to5 > staggerStart) {
                   localProgress = Math.min(1.0, (scroll4to5 - staggerStart) / (staggerEnd - staggerStart));
                 }
-                
+
                 const easedLocal = localProgress * (2 - localProgress);
                 const transform = `translateX(${(1 - easedLocal) * -500}px)`;
                 const opacity = easedLocal;
 
                 return (
-                  <div 
-                    className="education-card" 
+                  <div
+                    className="education-card"
                     key={idx}
                     style={{ transform, opacity }}
                   >
@@ -1248,7 +1334,7 @@ export default function App() {
         {/* Section 6: Resume (Vertical Scroll & Transparent background revealing video/off-white) */}
         <div className="section resume-section">
           <div className="resume-container">
-            <div 
+            <div
               className="resume-left"
               style={{
                 transform: resumeLeftTransform,
@@ -1257,15 +1343,15 @@ export default function App() {
             >
               <h2 className="resume-header-title">RESUME</h2>
             </div>
-            
-            <div 
+
+            <div
               className="resume-right"
               style={{
                 transform: resumeRightTransform,
                 opacity: resumeOpacity
               }}
             >
-              <a 
+              <a
                 href="https://drive.google.com/file/d/1dLvQrq_nfjMAMF-0Zdvhz27b9i40FF8V/view?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -1283,7 +1369,7 @@ export default function App() {
           <div className="contact-cards-viewport">
             <div className="contact-container">
               {/* Header: WHAT'S UP ON SOCIALS */}
-              <div 
+              <div
                 className="contact-header-container"
                 style={{
                   transform: `translateY(${(1 - contactEased) * -30}px)`,
@@ -1335,7 +1421,7 @@ export default function App() {
                   const finalZIndex = hoveredCardIndex === idx ? 10 : baseZ;
 
                   return (
-                    <a 
+                    <a
                       key={idx}
                       href={platform.url}
                       target="_blank"
@@ -1390,7 +1476,7 @@ export default function App() {
           </div>
 
           {/* Part 2: Footer Overlay Viewport */}
-          <div 
+          <div
             className="contact-footer-viewport"
             style={{
               backgroundImage: `url(${intersectUrl})`
@@ -1399,10 +1485,10 @@ export default function App() {
             <div className="footer-overlay-content">
               {/* Signature and Motto */}
               <div className="footer-header">
- 
+
                 <h2 className="footer-motto">
-                  ALWAYS <span className="bring">BRINGING</span><br />
-                  THE FIGHT.
+                  ALWAYS <span className="bring">BUILDING</span><br />
+                  WHAT'S NEXT.
                 </h2>
               </div>
 
@@ -1423,11 +1509,11 @@ export default function App() {
                 <div className="footer-col">
                   <span className="footer-col-label">FOLLOW ON</span>
                   <ul className="footer-links">
-                    <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer">INSTAGRAM</a></li>
-                    <li><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LINKEDIN</a></li>
+                    <li><a href="https://www.instagram.com/thenameis_ojas/" target="_blank" rel="noopener noreferrer">INSTAGRAM</a></li>
+                    <li><a href="https://www.linkedin.com/in/ojas-dhargave-252990210" target="_blank" rel="noopener noreferrer">LINKEDIN</a></li>
                     <li><a href="mailto:ojasdhargave@gmail.com">GMAIL</a></li>
-                    <li><a href="https://github.com/ojasdhargave" target="_blank" rel="noopener noreferrer">GITHUB</a></li>
-                    <li><a href="https://behance.net" target="_blank" rel="noopener noreferrer">BEHANCE</a></li>
+                    <li><a href="https://github.com/ojasdhargave-iiitv" target="_blank" rel="noopener noreferrer">GITHUB</a></li>
+                    <li><a href="https://www.behance.net/jasdhargave" target="_blank" rel="noopener noreferrer">BEHANCE</a></li>
                   </ul>
                 </div>
               </div>
@@ -1435,8 +1521,8 @@ export default function App() {
 
               {/* Neon Business Enquiry Pill Button */}
               <div className="business-enquiries-wrap">
-                <a 
-                  href="mailto:ojasdhargave@gmail.com?subject=Business%20Enquiry" 
+                <a
+                  href="mailto:ojasdhargave@gmail.com?subject=Business%20Enquiry"
                   className="business-btn"
                 >
                   BUSINESS ENQUIRIES ↗
