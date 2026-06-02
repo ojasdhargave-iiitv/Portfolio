@@ -880,6 +880,12 @@ export default function App() {
         }}
       />
 
+      {isMobile && (
+        <div className="pc-notice-pill" style={{ opacity: textOpacity * 0.5 }}>
+          <span>Open site on PC for better interaction</span>
+        </div>
+      )}
+
       <nav
         className={`menu ${isMenuOpen ? 'open' : ''}`}
         aria-label="Primary"
