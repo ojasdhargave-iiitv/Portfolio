@@ -388,6 +388,8 @@ export default function App() {
   }, []);
 
   const isTablet = windowWidth <= 1024;
+  const isMobile = windowWidth <= 768;
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [leftOffset, setLeftOffset] = useState({ x: 0, y: -3.5 });
@@ -733,6 +735,7 @@ export default function App() {
 
   const shrinkScale = 1 - progress1 * 0.55; // vertical scale from 1.0 down to 0.45
   const shrinkScaleX = 1 - progress1 * 0.65; // horizontal scale from 1.0 down to 0.35 (reduces card width additional to height)
+  const wrapperShrinkScale = 1 - progress1 * (isMobile ? 0.72 : 0.55);
   const shrinkBorderRadius = progress1 * 32; // border radius from 0px to 32px
 
   // Opacities
@@ -830,7 +833,7 @@ export default function App() {
 
   return (
     <div
-      className="home"
+      className={`home ${isMenuOpen ? 'menu-open' : ''}`}
       style={{
         '--text-color': textColor,
         backgroundColor: backgroundColor,
@@ -863,7 +866,7 @@ export default function App() {
       <div className="name-block" onClick={() => scrollToSection(0)} style={{ cursor: 'pointer' }}>
         <span className='texttrans' style={{ transition: 'color 0.3s ease' }}>OJAS</span>
         <span className="name-block2">DHAR</span>
-        <span className="name-block2" style={{ fontSize: '25.5px' }}>GAVE</span>
+        <span className="name-block2" style={{ fontSize: 'var(--name-gave-font-size, 25.5px)' }}>GAVE</span>
       </div>
 
       <img
@@ -878,14 +881,36 @@ export default function App() {
       />
 
       <nav
-        className="menu"
+        className={`menu ${isMenuOpen ? 'open' : ''}`}
         aria-label="Primary"
-        onMouseEnter={() => setIsMenuHovered(true)}
+        onMouseEnter={() => !isMobile && setIsMenuHovered(true)}
         onMouseLeave={() => {
-          setIsMenuHovered(false);
-          setHoveredIndex(null);
+          if (!isMobile) {
+            setIsMenuHovered(false);
+            setHoveredIndex(null);
+          }
         }}
       >
+        {isMobile && (
+          <button
+            className="menu-toggle-btn"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle menu"
+            aria-expanded={isMenuOpen}
+          >
+            {isMenuOpen ? (
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                <line x1="5" y1="5" x2="15" y2="15"></line>
+                <line x1="15" y1="5" x2="5" y2="15"></line>
+              </svg>
+            ) : (
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                <line x1="8" y1="7" x2="16" y2="7"></line>
+                <line x1="4" y1="13" x2="12" y2="13"></line>
+              </svg>
+            )}
+          </button>
+        )}
         <div className="menu-inner">
           <ul>
             {menuItems.map((item, index) => {
@@ -894,13 +919,16 @@ export default function App() {
               return (
                 <li
                   key={item}
-                  onMouseEnter={() => setHoveredIndex(index)}
+                  onMouseEnter={() => !isMobile && setHoveredIndex(index)}
                   onClick={() => {
                     if (index === 0) scrollToSection(1.6);
                     else if (index === 1) scrollToSection(2.6);
                     else if (index === 2) scrollToSection(3.6);
                     else if (index === 3) scrollToSection(4.6);
                     else if (index === 4) scrollToSection(5.3);
+                    if (isMobile) {
+                      setIsMenuOpen(false);
+                    }
                   }}
                 >
                   <span className={isActive ? 'active' : ''}>
@@ -967,7 +995,7 @@ export default function App() {
           <div
             className="shrink-wrapper"
             style={{
-              transform: `scale(${shrinkScaleX}, ${shrinkScale})`,
+              transform: `scale(${shrinkScaleX}, ${wrapperShrinkScale})`,
               borderRadius: `${shrinkBorderRadius}px`,
               boxShadow: `rgba(0, 0, 0, ${easedProgress * 0.15}) 0px ${easedProgress * 20}px ${easedProgress * 50}px`,
             }}
@@ -1006,7 +1034,7 @@ export default function App() {
             <div
               className="portrait-wrap"
               style={{
-                transform: `translateX(-54%) scaleX(${shrinkScale / shrinkScaleX})`,
+                transform: `translateX(var(--portrait-translate-x, -54%)) scaleX(${shrinkScale / shrinkScaleX}) scaleY(${shrinkScale / wrapperShrinkScale})`,
                 transformOrigin: 'bottom center'
               }}
             >
@@ -1127,8 +1155,9 @@ export default function App() {
           <div
             className="works-track"
             style={{
-              transform: `translateX(${-progress3 * 125}vw)`
-            }}
+              '--progress3': progress3,
+              transform: `translateX(var(--works-tx, ${-progress3 * 125}vw))`
+            } as React.CSSProperties}
           >
             {/* Vertically stacked Title scrolling with the track */}
             <div className="works-vertical-title">
@@ -1410,8 +1439,14 @@ export default function App() {
                   }
 
                   // Compute dynamic transform using the ease progression
+                  const cardDelay = idx * 0.12;
+                  const cardProgress = contactEased >= 1 
+                    ? 1 
+                    : Math.max(0, Math.min(1, (contactEased - cardDelay) / (1 - cardDelay)));
+                  const mobileTx = idx % 2 === 0 ? (1 - cardProgress) * -100 : (1 - cardProgress) * 100;
+
                   const transform = isMobile
-                    ? 'none'
+                    ? `translateX(${mobileTx}vw) scale(${hoveredCardIndex === idx ? 1.02 : 1.0})`
                     : `translateX(${finalX * contactEased}px) rotate(${baseCardRot * contactEased}deg) translateY(${(1 - contactEased) * 200 + baseCardY * contactEased}px) scale(${hoverScale})`;
 
                   // Dynamic z-index layering
@@ -1419,6 +1454,8 @@ export default function App() {
                   // Hovered card goes to absolute top (10)
                   const baseZ = idx === 2 ? 5 : (idx === 1 || idx === 3) ? 4 : 3;
                   const finalZIndex = hoveredCardIndex === idx ? 10 : baseZ;
+
+                  const opacity = isMobile ? cardProgress * contactOpacity : contactOpacity;
 
                   return (
                     <a
@@ -1435,7 +1472,7 @@ export default function App() {
                         backgroundColor: platform.bgColor,
                         color: platform.textColor,
                         borderColor: platform.borderColor,
-                        opacity: contactOpacity,
+                        opacity: opacity,
                         '--platform-color': platform.color,
                         '--platform-glow': platform.glow
                       } as React.CSSProperties}
