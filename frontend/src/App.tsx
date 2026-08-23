@@ -13,6 +13,7 @@ import instagramIcon from './assets/images/instagram.webp';
 // @ts-ignore
 import movesCabseFont from './assets/fonts/MovesCabse-Regular.ttf';
 import LiquidDistortion from './components/LiquidDistortion';
+import { LiquidGlassButton } from './components/ui/LiquidGlassButton';
 
 // PortionUp images
 import portionup1 from './assets/images/portionup/1.png';
@@ -400,6 +401,54 @@ export default function App() {
   const [shouldRenderLoader, setShouldRenderLoader] = useState(true);
   const [isWebGLActive, setIsWebGLActive] = useState(false);
 
+  interface GlassButtonPosition {
+    x: number;
+    y: number;
+  }
+  const [glassButtonPositions, setGlassButtonPositions] = useState<GlassButtonPosition[]>([]);
+
+  useEffect(() => {
+    const calculatePositions = () => {
+      const section = document.querySelector('.resume-section');
+      const container = document.querySelector('.resume-container');
+      if (!section || !container) return;
+
+      const sectionRect = section.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
+
+      const containerLeft = containerRect.left - sectionRect.left;
+      const containerTop = containerRect.top - sectionRect.top;
+      const containerWidth = containerRect.width;
+      const containerHeight = containerRect.height;
+
+      const btnW = 200;
+      const btnH = 90;
+
+      // Position the 4 buttons (codeforces, github, leetcode, linkedin) at fixed corner areas
+      // to avoid overlapping each other or the central container, keeping the layout clean.
+      const w = sectionRect.width;
+      const h = sectionRect.height;
+
+      const newPositions: GlassButtonPosition[] = [
+        { x: 150, y: 150 },                                   // Top-Left (codeforces)
+        { x: Math.max(50, w - btnW - 230), y: 190 },          // Top-Right (github)
+        { x: 650, y: Math.max(50, h - btnH - 110) },          // Bottom-Left (leetcode)
+        // { x: Math.max(50, w - btnW - 50), y: Math.max(50, h - btnH - 50) } // Bottom-Right (linkedin)
+      ];
+
+      setGlassButtonPositions(newPositions);
+    };
+
+    // Delay calculation to ensure layout dimensions are fully calculated
+    const timer = setTimeout(calculatePositions, 200);
+
+    window.addEventListener('resize', calculatePositions);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', calculatePositions);
+    };
+  }, [isLoading]);
+
   const [scrollProgress, setScrollProgress] = useState(0);
   const targetScrollRef = useRef(0);
   const currentScrollRef = useRef(0);
@@ -651,8 +700,8 @@ export default function App() {
   // Scroll tracking with damping (inertia)
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
-      // More scroll in hand: 0.00035 multiplier gives highly premium, low-sensitivity control
-      const speedMultiplier = 0.00035;
+      // More scroll in hand: reduced by 50% for lower sensitivity
+      const speedMultiplier = 0.000175;
       let newTarget = targetScrollRef.current + e.deltaY * speedMultiplier;
       newTarget = Math.max(0, Math.min(6.5, newTarget));
       targetScrollRef.current = newTarget;
@@ -671,7 +720,8 @@ export default function App() {
         const deltaY = touchStart - touchCurrent;
         touchStart = touchCurrent;
 
-        const speedMultiplier = 0.0008;
+        // touch speed multiplier reduced by 50%
+        const speedMultiplier = 0.0004;
         let newTarget = targetScrollRef.current + deltaY * speedMultiplier;
         newTarget = Math.max(0, Math.min(6.5, newTarget));
         targetScrollRef.current = newTarget;
@@ -1368,6 +1418,32 @@ export default function App() {
 
         {/* Section 6: Resume (Vertical Scroll & Transparent background revealing video/off-white) */}
         <div className="section resume-section">
+          {glassButtonPositions.map((pos, idx) => {
+            const btns = [
+              { label: 'Codeforces', url: 'https://codeforces.com/profile/thenameis_ojas' },
+              { label: 'GitHub', url: 'https://github.com/ojasdhargave-iiitv' },
+              { label: 'LeetCode', url: 'https://leetcode.com/u/thenameis_ojas/' },
+              { label: 'LinkedIn', url: 'https://www.linkedin.com/in/ojas-dhargave-252990210' }
+            ];
+            const btn = btns[idx];
+            if (!btn) return null;
+            return (
+              <LiquidGlassButton
+                key={btn.label}
+                label={btn.label}
+                url={btn.url}
+                style={{
+                  left: `${pos.x}px`,
+                  top: `${pos.y}px`,
+                  opacity: resumeOpacity,
+                  transform: `scale(${resumeOpacity})`,
+                  animation: 'liquidGlassFloat 6s ease-in-out infinite',
+                  animationDelay: `${idx * -1.5}s`,
+                  transition: 'opacity 0.2s ease, transform 0.2s ease'
+                }}
+              />
+            );
+          })}
           <div className="resume-container">
             <div
               className="resume-left"
@@ -1387,7 +1463,7 @@ export default function App() {
               }}
             >
               <a
-                href="https://drive.google.com/file/d/1dLvQrq_nfjMAMF-0Zdvhz27b9i40FF8V/view?usp=sharing"
+                href="https://drive.google.com/file/d/1g-Doh-Um_tOnrHbH-erH2-A2VQFOPY_r/view?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="resume-btn"
@@ -1446,8 +1522,8 @@ export default function App() {
 
                   // Compute dynamic transform using the ease progression
                   const cardDelay = idx * 0.12;
-                  const cardProgress = contactEased >= 1 
-                    ? 1 
+                  const cardProgress = contactEased >= 1
+                    ? 1
                     : Math.max(0, Math.min(1, (contactEased - cardDelay) / (1 - cardDelay)));
                   const mobileTx = idx % 2 === 0 ? (1 - cardProgress) * -100 : (1 - cardProgress) * 100;
 
